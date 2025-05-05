@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Task Manager{% endblock %}
+
+{% block content %}
+    <header>
+        <h1>Task Manager</h1>
+    </header>
+    <main>
+        <form id="login_form" method="POST" action="{{ url_for('login') }}">
+            <input type="text" name="username" placeholder="Username">
+            
+            <input type="password" name="password" placeholder="Password">
+            
+            <button type="submit" id="submit_login">Log-In</button>
+        </form>
+    </main>
+    <script src="/js/script.js"></script>
+{% endblock %}
