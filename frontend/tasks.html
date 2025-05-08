@@ -1,18 +1,21 @@
-{% extends "base.html" %}
-{% block title %}Task List{% endblock %}
-
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
     <header>
         <h1>Task List</h1>
     </header>
     <main>
         <form id="search_form"> <!--Talvez trocar por um form, assim posso colocar required-->
-            <input name="search" type="text" id="search_input" placeholder="..." required>
-            <select id="genero" name="genero" required>
+            <input name="search_text" type="text" id="search_text" placeholder="..." required>
+            <select id="search_select" name="genero" required>
                 <option value="" disabled selected>Search Task by:</option>
                 <option value="name">Name</option>
-                <option value="class">Class</option>
-                <option value="group">Group</option>
+                <option value="tag">Tag</option>
                 <option value="due_date">Due Date</option>
                 <option value="creation_date">Creation Date</option>
               </select>
@@ -43,7 +46,12 @@
     </main>
 
     <footer>
-        <a href="{{ url_for('index') }}" >End Session</a>
+        <button id="end_session_button">End Session</button>
 
     </footer>
-{% endblock %}
+
+
+</body>
+</html>    
+    
+    
