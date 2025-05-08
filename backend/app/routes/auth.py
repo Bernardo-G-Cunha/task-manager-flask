@@ -1,15 +1,15 @@
 import os
 from flask import Blueprint, request, make_response, render_template, redirect, url_for, Response, jsonify, session
 
-auth = Blueprint('auth', __name__, template_folder='templates')
+auth_bp = Blueprint('auth', __name__, template_folder='templates')
 
 
-@auth.route('/')
+@auth_bp.route('/')
 def index():
     return render_template('index.html')
 
 
-@auth.route('/login', methods=['POST'])
+@auth_bp.route('/login', methods=['POST'])
 def login():
     username = request.form['username']
     password = request.form['password']

@@ -1,18 +1,23 @@
 from flask import Flask
-from flask_migrate import Migrate
-from app.extensions import db, jwt, migrate
-from app.routes.auth import auth
-from app.routes.tasks import tasks
+from app.extensions import db, ma, jwt, migrate
+from app.routes.auth import auth_bp
+from app.routes.tasks import tasks_bp
+from app.config import Config
+from app.models import *
 
 
 def create_app():
     app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/')
 
-    #Register blueprints
+    app.config.from_object(Config)
 
     db.init_app(app)
+    ma.init_app(app)   
     jwt.init_app(app)
-    migrate.init_app(app)
+    migrate.init_app(app, db)
+
+    
+    #Register blueprints
 
     return app
 
