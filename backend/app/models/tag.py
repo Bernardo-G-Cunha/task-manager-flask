@@ -10,3 +10,6 @@ class Tag(db.Model):
     
     tasks = db.relationship('Task', secondary=tasks_tags, back_populate='tags')
     users = db.relationship('User', secondary=tasks_tags, back_populates='tags')    
+
+    def __repr__(self):
+        return f'id: {self.id}; name: {self.name}.'
