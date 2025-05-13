@@ -6,7 +6,8 @@ class TagSchema(ma.SQLAlchemySchema):
         model = Tag
         load_instance = True
 
-    id = ma.auto_field()
-    nome = ma.auto_field()
+    id = ma.auto_field(dump_only=True)
+    name = ma.auto_field(required=True)
+
     tasks = ma.Nested('TaskSchema', many=True)
     user = ma.Nested('UserSchema', many=True)

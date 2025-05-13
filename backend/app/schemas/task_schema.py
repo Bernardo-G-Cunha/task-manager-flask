@@ -6,10 +6,10 @@ class TaskSchema(ma.SQLAlchemySchema):
         model = Task
         load_instance = True
 
-    id = ma.auto_field()
-    name = ma.auto_field()
+    id = ma.auto_field(dump_only=True)
+    name = ma.auto_field(required=True)
     description = ma.auto_field()
     due = ma.auto_field()
-    creation_date = ma.auto_field()
+    creation_date = ma.auto_field(dump_only=True)
 
     tags = ma.Nested('TagSchema', many=True)
