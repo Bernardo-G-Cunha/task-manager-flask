@@ -7,9 +7,10 @@ class UserSchema(ma.SQLAlchemySchema):
         model = User
         load_instance = True
 
-    id = ma.auto_field()
-    name = ma.auto_field()
-    email = ma.auto_field()
-    
+    id = ma.auto_field(dump_only=True)
+    username = ma.auto_field(required=True)
+    email = ma.auto_field(required=True)
+    password = ma.auto_field(required=True, load_only=True)
+
     tasks = ma.Nested('TaskSchema', many=True)
     tags = ma.Nested('TagSchema', many=True)

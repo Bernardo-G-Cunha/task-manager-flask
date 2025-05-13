@@ -1,5 +1,5 @@
 from flask import Flask
-from app.extensions import db, ma, jwt, migrate
+from app.extensions import db, ma, jwt, migrate, bcrypt
 from app.routes.auth import auth_bp
 from app.routes.tasks import tasks_bp
 from app.config import Config
@@ -15,6 +15,7 @@ def create_app():
     ma.init_app(app)   
     jwt.init_app(app)
     migrate.init_app(app, db)
+    bcrypt.init_app(app)
 
     
     #Register blueprints
