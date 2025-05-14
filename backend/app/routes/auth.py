@@ -1,7 +1,9 @@
 import os
 from flask import Blueprint, request, make_response, render_template, redirect, url_for, Response, jsonify, session
+from sqlalchemy.exc import NoResultFound, MultipleResultsFound
 from app.extensions import bcrypt
 from app.schemas.user_schema import UserSchema
+from app.models.user import User
 from marshmallow import ValidationError
 
 auth_bp = Blueprint('auth', __name__, template_folder='templates')
@@ -12,32 +14,19 @@ user_schema = UserSchema()
 def login():
     try:
         data = user_schema.load(request.get_json())
-        username = data['username']
+        email = data['email']
         password = data['password']
 
-    except ValidationError as vali_err:
-        return jsonify({"error": vali_err.messsage}), 400
+    except ValidationError as err:
+        return jsonify({"error": err.messsages}), 400
 
-    except Exception as error:
-        return jsonify({"error": error.message}), 500
+    except Exception as err:
+        return jsonify({"error": str(err)}), 500
+
+    user = User.query.filter_by(email=email).first()
     
-    hashed_password = bcrypt.generate_password_hash(password)
-
-    # Pegar valor no db
-    isUsername = True
-    isPassword = True
-    isUser = (isUsername and isPassword)
-
-    if isUser == True:
-        session['username'] = username
-        return redirect(url_for('tasks'))
-    else:
-        if not isUser:
-            response = jsonify({'Error': 'Invalid User'})
-            return response, 404 
-        else:
-            response = jsonify({'Error': 'Wrong Password'})
-            return response, 401
-           
-
-
+    if not(email == user.email) or not(bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8'))):
+        return jsonify({"error": "Invalid credentials"}), 401
+    
+    #-------------------------------------------------------------------------
+    #Generate token with JWT
