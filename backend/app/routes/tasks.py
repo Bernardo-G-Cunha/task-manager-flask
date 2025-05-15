@@ -1,10 +1,11 @@
-from flask import Blueprint, request, render_template, url_for, jsonify
 from flask import Blueprint, request, make_response, redirect, url_for, Response, jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 tasks_bp = Blueprint('tasks', __name__, template_folder='templates')
 
 
 @tasks_bp.route('/tasks', methods=['GET', 'POST'])
+@jwt_required
 def tasks():
     if request.method == 'GET':
         return jsonify() #render_template('tasks.html')
