@@ -8,7 +8,7 @@ class UserSchema(ma.SQLAlchemySchema):
         load_instance = True
 
     id = ma.auto_field(dump_only=True)
-    username = ma.auto_field(required=True)
+    username = ma.auto_field()
     email = ma.auto_field(required=True)
     password = ma.auto_field(required=True, load_only=True)
 

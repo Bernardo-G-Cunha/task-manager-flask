@@ -13,7 +13,7 @@ class User(db.Model):
     tags = db.relationship('Tag', secondary=tasks_tags, back_populates='users')
 
     def __repr__(self):
-        return f'<User id={self.id} name={self.name} email={self.email}>'
+        return f'<User id={self.id} name={self.username} email={self.email}>'
     
     def save(self):
         db.session.add(self)

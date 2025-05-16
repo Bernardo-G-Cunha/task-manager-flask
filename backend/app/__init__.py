@@ -4,7 +4,7 @@ from app.routes.auth import auth_bp
 from app.routes.tasks import tasks_bp
 from app.config import Config
 from app.models import *
-
+from app.exceptions.error_handlers import register_error_handlers
 
 def create_app():
     app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/')
@@ -17,8 +17,9 @@ def create_app():
     migrate.init_app(app, db)
     bcrypt.init_app(app)
 
-    
+
     #Register blueprints
+    register_error_handlers(app)
 
     return app
 
