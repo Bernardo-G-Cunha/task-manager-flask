@@ -1,0 +1,49 @@
+
+h4{
+    margin: 0px;
+    padding: 20px 20px;
+    text-decoration: underline;
+}
+
+body{
+    display: grid;
+    grid-template-columns: 1fr;    
+    justify-items: center; /* alinha horizontalmente */
+    align-items: center;      /* 2 colunas iguais */
+  
+}
+
+main{
+    display: grid;
+    grid-template-columns: 1fr;    
+    justify-items: center; /* alinha horizontalmente */
+    align-items: center;   
+}
+
+#login_form{
+    display: grid;
+    justify-items: center; /* alinha horizontalmente */
+    align-items: center;
+    text-align: center;
+    padding: 5px;
+    margin: 0px;
+    width: 250px;
+    border: 2px solid rgb(32, 161, 201);
+    border-radius: 12px;
+}
+
+input{
+    display: block;
+    margin: 0px;
+}
+
+#signup_link{
+    font-size: 14px;
+    margin-top: 5px;
+    margin-left: 115px;
+}
+
+#submit_login{
+    margin: 20px 20px;
+    padding: 4px 20px;
+}

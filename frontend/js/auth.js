@@ -1,43 +1,36 @@
 // ----------------------------------------- Functions -----------------------------------------
 
-function loginProcessing(){
-    var username = document.querySelector('#name').value; 
-    var password = document.querySelector('#password').value;
 
-    fetch("{{ url_for('login') }}", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username: username, password: password })
-    })
-        .then(response => {
-            
-            if (!response.ok) {
-                
-                if (response.status === 404) {
-                    loginWarning(404);
-                    throw new Error("Invalid User");
-                } else if (response.status === 401) {
-                    loginWarning(401)
-                    throw new Error('Wrong Password');
-                } else {
-                    loginWarning(500)
-                    throw new Error('Unexpected Error');
-                };
-            }
-            return response.json();
-            })
-        
-        .then(data => {
-            console.log();
-        })
-        .catch(err => {
-            console.log(`Error: ${err.message}`);
-        });
+async function handleLoginFormSubmit(event) {
+  event.preventDefault(); // Impede o envio padrão do formulário
 
-};
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
+  try {
+    const response = await fetch("http://localhost:5000/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem("access_token", data.access_token);
+      window.location.href = "/dashboard.html"; 
+
+    } else {
+      throw new Error()
+    }
+  } catch (error) {
+    console.error("Erro na requisição:", error);
+    loginWarning(response.status)
+    
+  }
+}
 //----------------
 
 function loginWarning(status) {
@@ -69,4 +62,7 @@ function loginWarning(status) {
 // ---------------------------------------------------------------------------------------------------
 // ----------------------------------------- Event Listeners -----------------------------------------
 
-document.querySelector('#submit_login').addEventListener('click', loginProcessing);
+document.querySelector('#submit_login').addEventListener('click', handleFormSubmit);
+// Conecta a função ao envio do formulário
+const loginForm = document.getElementById("login-form");
+loginForm.addEventListener("submit", handleLoginFormSubmit);
