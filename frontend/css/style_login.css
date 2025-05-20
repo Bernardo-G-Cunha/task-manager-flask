@@ -8,9 +8,7 @@ body {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
-    /* alinha horizontalmente */
     align-items: center;
-    /* 2 colunas iguais */
 
 }
 
@@ -18,14 +16,12 @@ main {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
-    /* alinha horizontalmente */
     align-items: center;
 }
 
 #login_form {
     display: grid;
     justify-items: center;
-    /* alinha horizontalmente */
     align-items: center;
     text-align: center;
     padding: 5px;
@@ -55,17 +51,17 @@ footer {
   width: 98%;
   margin-top: 130px;
   padding: 20px;
-  background-color: #f5f5f5; /* opcional, só pra destacar */
+  background-color: #f5f5f5; 
 
 }
 
 #socials {
-  text-align: center; /* necessário para centralizar o inline-block */
+  text-align: center; 
 }
 
 #socials p {
-  display: inline-block; /* faz o <p> encolher ao tamanho do texto */
-  margin: 5px 7px;       /* centraliza horizontalmente */
-  text-align: center;     /* centraliza texto dentro, se for multilinha */
+  display: inline-block; 
+  margin: 5px 7px;       
+  text-align: center;
   
 }
