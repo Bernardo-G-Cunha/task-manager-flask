@@ -1,31 +1,28 @@
-h4 {
+
+h4{
     margin: 0px;
     padding: 20px 20px;
     text-decoration: underline;
 }
 
-body {
+body{
     display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    /* alinha horizontalmente */
-    align-items: center;
-    /* 2 colunas iguais */
-
+    grid-template-columns: 1fr;    
+    justify-items: center; /* alinha horizontalmente */
+    align-items: center;      /* 2 colunas iguais */
+  
 }
 
-main {
+main{
     display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    /* alinha horizontalmente */
-    align-items: center;
+    grid-template-columns: 1fr;    
+    justify-items: center; /* alinha horizontalmente */
+    align-items: center;   
 }
 
-#login_form {
+#login_form{
     display: grid;
-    justify-items: center;
-    /* alinha horizontalmente */
+    justify-items: center; /* alinha horizontalmente */
     align-items: center;
     text-align: center;
     padding: 5px;
@@ -35,25 +32,25 @@ main {
     border-radius: 12px;
 }
 
-input {
+input{
     display: block;
     margin: 0px;
 }
 
-#signup_link {
+#signup_link{
     font-size: 14px;
     margin-top: 5px;
     margin-left: 115px;
 }
 
-#submit_login {
+#submit_login{
     margin: 20px 20px;
     padding: 4px 20px;
 }
 
 footer {
   width: 98%;
-  margin-top: 130px;
+  margin-top: 50px;
   padding: 20px;
   background-color: #f5f5f5; /* opcional, só pra destacar */
 
