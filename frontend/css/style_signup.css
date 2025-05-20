@@ -8,21 +8,21 @@ h4{
 body{
     display: grid;
     grid-template-columns: 1fr;    
-    justify-items: center; /* alinha horizontalmente */
-    align-items: center;      /* 2 colunas iguais */
-  
+    justify-items: center; 
+    align-items: center;
+
 }
 
 main{
     display: grid;
     grid-template-columns: 1fr;    
-    justify-items: center; /* alinha horizontalmente */
+    justify-items: center; 
     align-items: center;   
 }
 
-#login_form{
+#signup_form{
     display: grid;
-    justify-items: center; /* alinha horizontalmente */
+    justify-items: center; 
     align-items: center;
     text-align: center;
     padding: 5px;
@@ -37,13 +37,13 @@ input{
     margin: 0px;
 }
 
-#signup_link{
+#login_link{
     font-size: 14px;
     margin-top: 5px;
     margin-left: 115px;
 }
 
-#submit_login{
+#submit_signup{
     margin: 20px 20px;
     padding: 4px 20px;
 }
@@ -52,17 +52,17 @@ footer {
   width: 98%;
   margin-top: 50px;
   padding: 20px;
-  background-color: #f5f5f5; /* opcional, só pra destacar */
+  background-color: #f5f5f5; 
 
 }
 
 #socials {
-  text-align: center; /* necessário para centralizar o inline-block */
+  text-align: center; 
 }
 
 #socials p {
-  display: inline-block; /* faz o <p> encolher ao tamanho do texto */
-  margin: 5px 7px;       /* centraliza horizontalmente */
-  text-align: center;     /* centraliza texto dentro, se for multilinha */
+  display: inline-block; 
+  margin: 5px 7px;       
+  text-align: center;
   
 }
