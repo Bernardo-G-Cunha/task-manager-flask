@@ -20,6 +20,8 @@ A simple task manager web application built with Flask and SQLite.
 - SQLAlchemy + Flask-Migrate
 - HTML5 + CSS3 + JavaScript
 
+---
+
 ## 📦 How to Run Locally
 
 ### 1. Clone this repository
@@ -126,4 +128,3 @@ Once deployed, the link will be added here.
 * This project is for learning and educational purposes.
 * More features will be added soon, such as user authentication and task deadlines.
 
----
