@@ -27,7 +27,7 @@ def register_error_handlers(app):
             "status": 422,
             "detail": exc.messages,
             "instance": request.path
-        }), 400
+        }), 422
 
     @app.errorhandler(OperationalError)
     def handle_operational_error(exc):

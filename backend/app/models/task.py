@@ -1,5 +1,8 @@
 from app.extensions import db
-from app.models.tasks_tags import tasks_tags  
+from app.models.task_tag import tasks_tags 
+from datetime import datetime, timezone
+
+
 
 class Task(db.Model):
     __tablename__ = 'tasks'
@@ -7,13 +10,14 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(70), nullable = False)
     description = db.Column(db.Text, nullable = True)
-    due = db.Column(db.DateTime, nullable = True)
-    creation_date = db.Column(db.DateTime, nullable = False)
+    due_date = db.Column(db.DateTime, nullable = True)
+    done = db.Column(db.Boolean, default=False, nullable=False)
+    creation_date = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
     
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False)
 
-    user = db.relationship('User', back_populate='tasks')
-    tags = db.relationship('Tag', secondary=tasks_tags, back_populate='tasks')
+    user = db.relationship('User', back_populates='tasks')
+    tags = db.relationship('Tag', secondary='tasks_tags', back_populates='tasks')
 
 
     def __repr__(self):

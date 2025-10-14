@@ -18,15 +18,17 @@ def create_user(username: str, email: str, password: str):
     user = User.query.filter_by(email=email).first()
 
     if user:
-        return UserAlreadyExistsError()
+        raise UserAlreadyExistsError()
 
     if len(password) < 8:
-        return WeakPasswordError()
+        raise WeakPasswordError()
     
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     
     new_user = User(username=username, email=email, password=hashed_password)
     new_user.save()
+
+    return new_user
     
     
 
