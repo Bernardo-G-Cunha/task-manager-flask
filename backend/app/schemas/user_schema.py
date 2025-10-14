@@ -14,3 +14,6 @@ class UserSchema(ma.SQLAlchemySchema):
 
     tasks = ma.Nested('TaskSchema', many=True)
     tags = ma.Nested('TagSchema', many=True)
+
+
+user_schema = UserSchema()

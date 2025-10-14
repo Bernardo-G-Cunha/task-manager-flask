@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
 from marshmallow import ValidationError
 from app.extensions import bcrypt
-from app.schemas.user_schema import UserSchema
+from app.schemas.user_schema import user_schema
 from app.models.user import User
 from app.services.auth import *
 from app.exceptions.auth_exceptions import *
@@ -11,7 +11,6 @@ from app.exceptions.auth_exceptions import *
 
 auth_bp = Blueprint('auth', __name__, template_folder='templates')
 
-user_schema = UserSchema()
 
 @auth_bp.route('/', methods=['POST'])
 def login():

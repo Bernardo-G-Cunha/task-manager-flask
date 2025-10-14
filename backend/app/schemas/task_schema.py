@@ -9,7 +9,12 @@ class TaskSchema(ma.SQLAlchemySchema):
     id = ma.auto_field(dump_only=True)
     name = ma.auto_field(required=True)
     description = ma.auto_field()
-    due = ma.auto_field()
-    creation_date = ma.auto_field(dump_only=True)
+    due_date = ma.auto_field()
+    done = ma.auto_field()
+    creation_date = ma.auto_field(fomat='iso', dump_only=True)
 
     tags = ma.Nested('TagSchema', many=True)
+
+
+task_schema = TaskSchema()
+task_list_schema = TaskSchema(many=True)

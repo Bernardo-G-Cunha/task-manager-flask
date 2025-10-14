@@ -8,4 +8,4 @@ class Config:
 
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'jwt-secret')
 
-    JWT_ACESS_TOKEN_EXPIRES = timedelta(hours=1)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)

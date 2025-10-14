@@ -1,0 +1,104 @@
+Ótima pergunta! Pesquisar por data quando o banco guarda datetime com hora e timezone pode parecer complicado, mas tem soluções elegantes. Vou explicar direitinho.
+
+---
+
+## Cenário
+
+* Banco guarda `created_at` com data + hora + timezone (ex: `2025-08-01T14:30:00+00:00`)
+* Usuário quer filtrar só por **data** (ex: todas as tasks criadas em 01/08/2025)
+* A query precisa encontrar todos os registros com `created_at` naquela data, independente do horário e timezone.
+
+---
+
+## Por que não dá para só comparar com `created_at == "2025-08-01"`?
+
+Porque o campo tem hora e fuso, então vai ser quase impossível bater exatamente (a menos que o horário seja 00:00:00).
+
+---
+
+## Como fazer a pesquisa correta no SQLAlchemy?
+
+### Passo 1: Receber a data do usuário (ex: só "2025-08-01")
+
+Normalmente, o front envia só a data (sem hora):
+
+```json
+{
+  "date": "2025-08-01"
+}
+```
+
+No backend, você pode transformar isso numa faixa de datas UTC.
+
+### Passo 2: Criar intervalo (start e end do dia)
+
+No Python:
+
+```python
+from datetime import datetime, time, timezone, timedelta
+
+def get_utc_range_for_date(date_str):
+    # recebe string 'YYYY-MM-DD'
+    date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+
+    start = datetime.combine(date_obj, time.min).replace(tzinfo=timezone.utc)  # 2025-08-01 00:00:00+00:00
+    end = datetime.combine(date_obj, time.max).replace(tzinfo=timezone.utc)    # 2025-08-01 23:59:59.999999+00:00
+
+    return start, end
+```
+
+### Passo 3: Filtrar no banco usando intervalo
+
+```python
+start, end = get_utc_range_for_date("2025-08-01")
+
+tasks = Task.query.filter(Task.created_at >= start, Task.created_at <= end).all()
+```
+
+Assim, você pega todas as tasks criadas naquele dia UTC.
+
+---
+
+## O que acontece com o timezone?
+
+* Como o banco guarda o datetime UTC-aware, e você está filtrando com timestamps UTC-aware também, a comparação funciona direitinho.
+* Não precisa manipular strings nem fazer conversão complicada.
+* O filtro é eficiente e pode usar índices.
+
+---
+
+## E se o usuário quer filtrar pela data no fuso local dele?
+
+Isso fica mais complexo porque o backend precisa saber o fuso local do usuário para converter o intervalo corretamente.
+
+### Opções para lidar com isso:
+
+1. **Receber o fuso horário ou offset no filtro do front-end**
+
+   Exemplo:
+
+   ```json
+   {
+     "date": "2025-08-01",
+     "timezone_offset": "-03:00"
+   }
+   ```
+
+   Você converte o intervalo para UTC considerando esse offset.
+
+2. **Fazer a conversão do fuso horário no front-end, enviando o intervalo UTC**
+
+   Melhor opção porque centraliza a lógica de fuso no front.
+
+---
+
+## Em resumo
+
+* Filtrar por data num campo datetime timezone-aware é melhor feito usando um intervalo (start e end).
+* Você deve receber a data (e, idealmente, o fuso do usuário) e converter para intervalo UTC-aware.
+* No banco, faça filtro entre esse intervalo.
+* Isso evita manipular strings e garante precisão e eficiência.
+
+---
+
+Se quiser, posso ajudar a montar um exemplo de rota Flask que recebe uma data e faz essa busca de forma correta. Quer?
