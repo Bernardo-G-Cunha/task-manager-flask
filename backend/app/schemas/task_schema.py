@@ -11,7 +11,7 @@ class TaskSchema(ma.SQLAlchemySchema):
     description = ma.auto_field()
     due_date = ma.auto_field()
     done = ma.auto_field()
-    creation_date = ma.auto_field(fomat='iso', dump_only=True)
+    creation_date = ma.auto_field(format='iso', dump_only=True)
 
     tags = ma.Nested('TagSchema', many=True)
 

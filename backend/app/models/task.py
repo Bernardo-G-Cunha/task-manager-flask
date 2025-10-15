@@ -1,5 +1,6 @@
 from app.extensions import db
 from app.models.task_tag import tasks_tags 
+from app.models.user_tag import users_tags
 from datetime import datetime, timezone
 
 

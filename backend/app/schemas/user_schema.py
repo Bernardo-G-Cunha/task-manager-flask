@@ -1,8 +1,9 @@
 from app.extensions import ma
 from app.models.user import User
+from marshmallow import Schema, fields
 
 
-class UserSchema(ma.SQLAlchemySchema):
+class UserCompleteSchema(ma.SQLAlchemySchema):
     class Meta:
         model = User
         load_instance = True
@@ -16,4 +17,19 @@ class UserSchema(ma.SQLAlchemySchema):
     tags = ma.Nested('TagSchema', many=True)
 
 
-user_schema = UserSchema()
+# Schema de entrada para login
+class UserLoginSchema(Schema):
+    email = fields.Email(required=True)
+    password = fields.Str(required=True)
+
+
+# Schema de entrada para signup
+class UserSignupSchema(Schema):
+    username = fields.Str(required=True)
+    email = fields.Email(required=True)
+    password = fields.Str(required=True)
+
+
+user_complete_schema = UserCompleteSchema()
+user_login_schema = UserLoginSchema()
+user_signup_schema = UserSignupSchema()
