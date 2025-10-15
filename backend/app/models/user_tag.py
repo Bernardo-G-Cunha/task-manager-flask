@@ -1,4 +1,3 @@
-# app/models/user_tag.py
 from app.extensions import db
 
 users_tags = db.Table(

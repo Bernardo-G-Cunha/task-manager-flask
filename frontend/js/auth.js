@@ -8,7 +8,7 @@ async function handleLoginFormSubmit(event) {
   const password = document.getElementById("password").value;
 
   try {
-    const response = await fetch("http://localhost:5000/auth", {
+    const response = await fetch("http://localhost:5000/auth/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,11 +23,11 @@ async function handleLoginFormSubmit(event) {
       window.location.href = "/dashboard.html"; 
 
     } else {
-      throw new Error()
+      throw { status: response.status, detail: data.detail };
     }
   } catch (error) {
     console.error("Erro na requisição:", error);
-    loginWarning(response.status)
+    loginWarning(error.status)
     
   }
 }
@@ -62,7 +62,7 @@ function loginWarning(status) {
 // ---------------------------------------------------------------------------------------------------
 // ----------------------------------------- Event Listeners -----------------------------------------
 
-document.querySelector('#submit_login').addEventListener('click', handleFormSubmit);
+document.querySelector('#submit_login').addEventListener('click', handleLoginFormSubmit);
 // Conecta a função ao envio do formulário
-const loginForm = document.getElementById("login-form");
+const loginForm = document.getElementById("login_form");
 loginForm.addEventListener("submit", handleLoginFormSubmit);

@@ -1,5 +1,5 @@
 from app.extensions import db
-from app.models.task_tag import tasks_tags  
+from app.models.user_tag import users_tags 
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -10,7 +10,7 @@ class User(db.Model):
     password = db.Column(db.String, nullable = False)
 
     tasks = db.relationship('Task', back_populates='user')
-    tags = db.relationship('Tag', secondary='tasks_tags', back_populates='users')
+    tags = db.relationship('Tag', secondary=users_tags, back_populates='users')
     
     def __repr__(self):
         return f'<User id={self.id} name={self.username} email={self.email}>'
