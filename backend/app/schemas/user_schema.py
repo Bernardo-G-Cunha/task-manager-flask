@@ -2,7 +2,7 @@ from app.extensions import ma
 from app.models.user import User
 from marshmallow import Schema, fields
 
-
+# Complete schema to keep and return data
 class UserCompleteSchema(ma.SQLAlchemySchema):
     class Meta:
         model = User
@@ -17,13 +17,13 @@ class UserCompleteSchema(ma.SQLAlchemySchema):
     tags = ma.Nested('TagSchema', many=True)
 
 
-# Schema de entrada para login
+# Login only schema
 class UserLoginSchema(Schema):
     email = fields.Email(required=True)
     password = fields.Str(required=True)
 
 
-# Schema de entrada para signup
+# Signup only schema
 class UserSignupSchema(Schema):
     username = fields.Str(required=True)
     email = fields.Email(required=True)

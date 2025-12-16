@@ -1,3 +1,4 @@
+# Super model for detailed exceptions
 class ProblemDetailException(Exception):
     def __init__(self, type_: str, title: str, status: int, detail: str):
         self.type = type_
