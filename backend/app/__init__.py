@@ -12,7 +12,7 @@ def create_app():
       
     app.config.from_object(Config)
     app.url_map.strict_slashes = False
-    
+
     db.init_app(app)
     ma.init_app(app)   
     jwt.init_app(app)
@@ -32,12 +32,6 @@ def create_app():
     register_error_handlers(app)
 
     return app
-
-
-
-
-
- 
 
 
 #-------------------------------------------------------------------------------
