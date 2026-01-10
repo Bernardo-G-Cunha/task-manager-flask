@@ -172,4 +172,4 @@ cython_debug/
 
 .example.txt
 
-.indexes.txt
+.indexes.txt.datetimequery.txt
