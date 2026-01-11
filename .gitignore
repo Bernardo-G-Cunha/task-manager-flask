@@ -170,6 +170,7 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
+# Specific files
 .example.txt
-
-.indexes.txt.datetimequery.txt
+.indexes.txt
+.datetimequery.txt
