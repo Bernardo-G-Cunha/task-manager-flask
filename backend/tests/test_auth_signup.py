@@ -1,10 +1,10 @@
-def test_signup_sucesso(client):
+def test_signup_success(client):
     response = client.post(
         "/auth/signup",
         json={
             "username": "bernardo",
             "email": "bernardo@email.com",
-            "password": "teste_8_caracteres"
+            "password": "test_8_digits"
         }
     )
     data = response.get_json()
@@ -14,19 +14,19 @@ def test_signup_sucesso(client):
     assert data["message"] == "Successfully signed up"
 
 
-def test_signup_dados_invalidos(client):
+def test_signup_invalid_data(client):
     response = client.post(
         "/auth/signup",
         json={
             "email": "email-sem-username"
-            # faltam campos obrigatórios
+            # Missing needed fields
         }
     )
 
     assert response.status_code == 422
 
 
-def test_signup_usuario_duplicado(client):
+def test_signup_duplicate_user(client):
     payload = {
         "username": "bernardo",
         "email": "bernardo@email.com",
