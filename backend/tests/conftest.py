@@ -1,16 +1,21 @@
 # tests/conftest.py
 import pytest
+import os
 from app import create_app
 from app.extensions import db
 
 @pytest.fixture
 def app():
-    app = create_app()
-    app.config.update({
+    os.environ["FLASK_ENV"] = "testing"
+
+    test_config = {
         "TESTING": True,
-        "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
-        "JWT_SECRET_KEY": "test-secret"
-    })
+        "SQLALCHEMY_DATABASE_URI": "postgresql://taskuser:taskpass@localhost:5432/taskmanager_test",
+        "SECRET_KEY": "test",
+        "JWT_SECRET_KEY": "test"
+    }
+
+    app = create_app(test_config)
 
     with app.app_context():
         db.create_all()
