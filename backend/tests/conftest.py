@@ -3,6 +3,8 @@ import pytest
 import os
 from app import create_app
 from app.extensions import db
+from app.models import User
+from app.extensions import bcrypt
 
 @pytest.fixture
 def app():
@@ -27,3 +29,15 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+@pytest.fixture
+def user(app):
+    with app.app_context():
+        user = User(
+            username="test_user",
+            email="test@example.com",
+            password = bcrypt.generate_password_hash("123456789").decode("utf-8")
+        )
+        db.session.add(user)
+        db.session.commit()
+        return user
