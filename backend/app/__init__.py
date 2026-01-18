@@ -5,6 +5,7 @@ from app.extensions import db, ma, jwt, migrate, bcrypt
 from app.routes.auth import auth_bp
 from app.routes.tasks import tasks_bp
 from app.exceptions.error_handlers import register_error_handlers
+from app.exceptions.jwt_handlers import register_jwt_handlers
 
 
 def create_app(test_config=None):
@@ -36,7 +37,8 @@ def create_app(test_config=None):
     # Register blueprints
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(tasks_bp, url_prefix='/tasks')
-
+    
+    register_jwt_handlers(jwt)
     register_error_handlers(app)
 
     return app
