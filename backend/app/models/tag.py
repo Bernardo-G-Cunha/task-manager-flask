@@ -13,12 +13,3 @@ class Tag(db.Model):
 
     def __repr__(self):
         return f'<Tag id={self.id} name={self.name}>'
-    
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-
