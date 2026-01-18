@@ -8,6 +8,3 @@ class TagSchema(ma.SQLAlchemySchema):
 
     id = ma.auto_field(dump_only=True)
     name = ma.auto_field(required=True)
-
-    tasks = ma.Nested('TaskSchema', many=True)
-    user = ma.Nested('UserSchema', many=True)
