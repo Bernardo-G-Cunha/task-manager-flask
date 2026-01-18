@@ -8,8 +8,8 @@ def test_signup_success(client):
         }
     )
     data = response.get_json()
-    print(data)
-    assert response.status_code == 200
+
+    assert response.status_code == 201
     
     assert data["message"] == "Successfully signed up"
 
