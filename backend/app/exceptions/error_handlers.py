@@ -2,7 +2,7 @@ from flask import request, jsonify
 from sqlalchemy.exc import OperationalError
 from marshmallow import ValidationError
 
-from app.exceptions.auth_exceptions import (
+from app.exceptions.base import (
     ProblemDetailException
 )
 
