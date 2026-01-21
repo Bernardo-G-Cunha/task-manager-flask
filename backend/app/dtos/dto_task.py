@@ -22,6 +22,7 @@ class TaskGetDTO:
 
 @dataclass
 class TaskUpdateDTO:
+    id: int
     name: str
     description: str
     due_date: str

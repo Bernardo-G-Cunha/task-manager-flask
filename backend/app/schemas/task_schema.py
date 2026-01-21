@@ -1,6 +1,6 @@
 from app.models import Task
 from app.extensions import ma
-from app.dtos.dto_task import TaskCreateDTO
+from app.dtos.dto_task import TaskCreateDTO, TaskUpdateDTO
 from marshmallow import post_load
 
 class TaskCompleteSchema(ma.SQLAlchemySchema):
@@ -39,7 +39,8 @@ class TaskUpdateSchema(ma.SQLAlchemySchema):
     class Meta:
         model = Task
         load_instance = True
-
+        
+    id = ma.auto_field()
     name = ma.auto_field()
     description = ma.auto_field()
     due_date = ma.auto_field()
@@ -49,9 +50,10 @@ class TaskUpdateSchema(ma.SQLAlchemySchema):
 
     @post_load
     def make_dto(self, data, **kwargs):
-        return TaskCreateDTO(**data)
+        return TaskUpdateDTO(**data)
     
    
 
 task_create_schema = TaskCreateSchema()
+task_update_schema = TaskUpdateSchema()
 task_list_schema = TaskCompleteSchema(many=True)
