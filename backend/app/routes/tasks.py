@@ -35,18 +35,12 @@ def create_task():
 @tasks_bp.route('/<int:task_id>', methods=['PATCH'])
 @jwt_required()
 def edit_task(task_id):
-    user_id = get_jwt_identity()
-    
+    user_id = get_jwt_identity()    
     update_data = task_update_schema.load(request.get_json())
+    
+    update_task(update_task_data=update_data, user_id=user_id, task_id=task_id)
 
-    # 3️⃣ chama o service
-    update_task(
-        task_id=task_id,
-        user_id=user_id,
-        update_data=update_data
-    )
-
-    return jsonify({"success": True, "message": "Task successfully edited"}), 204
+    return "", 204
 
 
 
