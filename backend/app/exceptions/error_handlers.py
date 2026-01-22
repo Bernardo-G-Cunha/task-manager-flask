@@ -1,8 +1,8 @@
 from flask import request, jsonify
-from sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import OperationalError, IntegrityError
 from marshmallow import ValidationError
 
-from app.exceptions.base import (
+from app.exceptions import (
     ProblemDetailException
 )
 
@@ -29,13 +29,23 @@ def register_error_handlers(app):
             "instance": request.path
         }), 422
 
+    @app.errorhandler(IntegrityError)
+    def handle_integrity_error(exc):
+        return jsonify({
+            "type": "/errors/database",
+            "title": "Database integrity error",
+            "status": 500,
+            "detail": "A database integrity constraint was violated.",
+            "instance": request.path
+        }), 500
+
     @app.errorhandler(OperationalError)
     def handle_operational_error(exc):
         return jsonify({
             "type": "/errors/database",
             "title": "Database operational error",
             "status": 500,
-            "detail": str(exc),
+            "detail": "Database service is temporarily unavailable.",
             "instance": request.path
         }), 500
 
@@ -45,6 +55,6 @@ def register_error_handlers(app):
             "type": "/errors/internal",
             "title": "Internal server error",
             "status": 500,
-            "detail": str(exc),
+            "detail": "An unexpected error occurred.",
             "instance": request.path
         }), 500

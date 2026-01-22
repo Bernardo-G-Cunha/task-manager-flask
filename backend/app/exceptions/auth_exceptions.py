@@ -1,4 +1,4 @@
-from exceptions.base import ProblemDetailException
+from app.exceptions import ProblemDetailException
 
 class AuthenticationError(ProblemDetailException):
     """Error for invalid email or password during log in."""
