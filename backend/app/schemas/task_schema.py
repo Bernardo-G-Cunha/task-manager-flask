@@ -21,7 +21,6 @@ class TaskCompleteSchema(ma.SQLAlchemySchema):
 class TaskCreateSchema(ma.SQLAlchemySchema):
     class Meta:
         model = Task
-        load_instance = True
 
     name = ma.auto_field(required=True)
     description = ma.auto_field()
@@ -38,9 +37,7 @@ class TaskUpdateSchema(ma.SQLAlchemySchema):
 
     class Meta:
         model = Task
-        load_instance = True
         
-    id = ma.auto_field()
     name = ma.auto_field()
     description = ma.auto_field()
     due_date = ma.auto_field()

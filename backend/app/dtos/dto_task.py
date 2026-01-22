@@ -3,11 +3,10 @@ from datetime import datetime
 
 @dataclass
 class TaskCreateDTO:
-    user_id: int
     name: str
-    description: str
-    due_date: str
-    tags: list[str]
+    description: str | None = None
+    due_date: str | None = None
+    tags: list[str] | None = None
     done: bool = False
    
 
@@ -22,9 +21,8 @@ class TaskGetDTO:
 
 @dataclass
 class TaskUpdateDTO:
-    id: int
-    name: str
-    description: str
-    due_date: str
-    done: bool
-    tags: list[str]
+    name: str | None = None
+    description: str | None = None
+    due_date: str | None = None
+    done: bool | None = None
+    tags: list[str] | None = None
