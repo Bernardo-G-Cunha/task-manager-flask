@@ -4,7 +4,7 @@ from app.extensions import bcrypt
 from app.schemas.user_schema import *
 from app.models.user import User
 from app.services.auth import *
-from app.exceptions.auth_exceptions import *
+from app.exceptions import *
 
 #------------------------------------------------------------------------------------------------------------------
 
