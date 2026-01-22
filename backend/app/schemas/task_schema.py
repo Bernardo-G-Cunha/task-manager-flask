@@ -54,3 +54,4 @@ class TaskUpdateSchema(ma.SQLAlchemySchema):
 task_create_schema = TaskCreateSchema()
 task_update_schema = TaskUpdateSchema()
 task_list_schema = TaskCompleteSchema(many=True)
+task_complete_schema = TaskCompleteSchema()

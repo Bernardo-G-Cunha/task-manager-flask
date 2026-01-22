@@ -15,14 +15,15 @@ def tasks():
         
     return jsonify({"success": True, "data": {"tasks": task_list_schema.dump(tasks)}}), 200
         
+
 @tasks_bp.route('/<int:task_id>', methods=['GET'])
 @jwt_required()
 def view_task(task_id):
     user_id = get_jwt_identity()
-    request_data = request.get_json()
-    task = Task.query.filter_by(id=task_id)
+    task = Task.query.filter_by(id=task_id, user_id=user_id).first()
     
-    return
+    return jsonify({"success": True, "data": {"task": task_complete_schema.dump(task)}}), 200
+
 
 @tasks_bp.route('/', methods=['POST'])
 @jwt_required()
@@ -31,6 +32,7 @@ def create_task():
     create_task(task_data=task_create_schema.load(request.get_json()), user_id=user_id)
     
     return jsonify({"success": True, "message": "Task successfully created"}), 201
+
 
 @tasks_bp.route('/<int:task_id>', methods=['PATCH'])
 @jwt_required()
