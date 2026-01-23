@@ -3,7 +3,8 @@ from app.models.user import User
 from app.models.task import Task
 from app.schemas.user_schema import *
 from app.exceptions import TaskNotFoundError
-from app.dtos.dto_task import TaskCreateDTO, TaskUpdateDTO
+from app.dtos.dto_task import TaskCreateDTO, TaskUpdateDTO, TaskGetDTO
+from app.schemas.task_schema import task_complete_schema
 from sqlalchemy.exc import IntegrityError, OperationalError
 
 
@@ -17,6 +18,17 @@ def create_task(task_data: TaskCreateDTO, user_id: int) -> None:
     except IntegrityError:
         db.session.rollback()
         raise
+
+def find_task(task_id: int, user_id: int) -> TaskGetDTO:
+
+    task = Task.query.filter_by(id=task_id, user_id=user_id).first()
+    
+    if task is None:
+        raise TaskNotFoundError()
+    
+    taskDTO = task_complete_schema.dump(task)
+
+    return taskDTO
 
 def update_task(update_task_data: TaskUpdateDTO, user_id: int, task_id: int) -> None:
     

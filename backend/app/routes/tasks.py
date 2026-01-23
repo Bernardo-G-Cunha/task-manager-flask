@@ -1,4 +1,4 @@
-from flask import Blueprint, request, make_response, redirect, url_for, Response, jsonify
+from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.schemas.task_schema import *
 from app.models import Task
@@ -20,9 +20,9 @@ def tasks():
 @jwt_required()
 def view_task(task_id):
     user_id = get_jwt_identity()
-    task = Task.query.filter_by(id=task_id, user_id=user_id).first()
+    taskDTO = find_task(task_id=task_id, user_id=user_id)
     
-    return jsonify({"success": True, "data": {"task": task_complete_schema.dump(task)}}), 200
+    return jsonify({"success": True, "data": {"task": taskDTO}}), 200
 
 
 @tasks_bp.route('/', methods=['POST'])

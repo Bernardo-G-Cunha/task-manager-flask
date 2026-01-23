@@ -2,6 +2,18 @@ from dataclasses import dataclass
 from datetime import datetime
 
 @dataclass
+class TaskCompleteDTO:
+    id: int
+    user_id: int
+    name: str
+    description: str
+    due_date: str
+    done: bool
+    creation_date: str
+    tags: list[str]
+
+
+@dataclass
 class TaskCreateDTO:
     name: str
     description: str | None = None
