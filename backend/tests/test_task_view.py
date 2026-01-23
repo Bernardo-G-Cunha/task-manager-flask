@@ -8,4 +8,15 @@ def test_task_view(client, auth_token, tasks):
     data = response.get_json()
     print(data)
     assert response.status_code == 200
+
+    assert data["data"]["task"]["id"] == 1
     
+def test_error_task_view(client, auth_token, tasks):
+    response = client.get(
+        "/tasks/6",
+        headers={
+            "Authorization": f"Bearer {auth_token}"
+        }
+    )
+    
+    assert response.status_code == 404
