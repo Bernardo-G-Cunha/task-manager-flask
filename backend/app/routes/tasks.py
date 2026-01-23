@@ -51,7 +51,6 @@ def edit_task(task_id):
 def delete_task(task_id):
     user_id = get_jwt_identity()
     
+    remove_task(task_id=task_id, user_id=user_id)
 
-
-
-    return jsonify()
+    return "", 204

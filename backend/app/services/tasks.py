@@ -47,3 +47,18 @@ def update_task(update_task_data: TaskUpdateDTO, user_id: int, task_id: int) -> 
     except IntegrityError:
         db.session.rollback()
         raise
+
+def remove_task(task_id: int, user_id: int) -> None:
+
+    task = Task.query.filter_by(id=task_id, user_id=user_id).first()
+    
+    if not task:
+        raise TaskNotFoundError()
+    
+    try:
+        db.session.delete(task)
+        db.session.commit()
+    
+    except IntegrityError:
+        db.session.rollback()
+        raise
