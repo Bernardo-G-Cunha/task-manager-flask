@@ -7,7 +7,15 @@ from sqlalchemy.exc import IntegrityError
 
 
 def add_task(task_data: TaskCreateDTO, user_id: int) -> None:
-    new_task = Task(**task_data, user_id=user_id)
+    
+    data = task_data.__dict__.copy()
+
+    tags = data.pop("tags", None)
+    
+    new_task = Task(**data, user_id=user_id)
+
+    if tags:
+        new_task.tags.extend(tags)
     
     try:
         db.session.add(new_task)
