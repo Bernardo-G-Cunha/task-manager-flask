@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.schemas.task_schema import *
+from app.schemas.task_schema import task_list_schema, task_create_schema, task_update_schema
 from app.models import Task
-from app.services.tasks import *
+from app.services.tasks import find_task, add_task, update_task, remove_task
 
 tasks_bp = Blueprint('tasks', __name__, template_folder='templates')
 
@@ -29,7 +29,7 @@ def view_task(task_id):
 @jwt_required()
 def create_task():
     user_id = get_jwt_identity()
-    create_task(task_data=task_create_schema.load(request.get_json()), user_id=user_id)
+    add_task(task_data=task_create_schema.load(request.get_json()), user_id=user_id)
     
     return jsonify({"success": True, "message": "Task successfully created"}), 201
 

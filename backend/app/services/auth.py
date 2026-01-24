@@ -1,8 +1,7 @@
-from flask import jsonify
 from app.extensions import bcrypt, db
 from app.models.user import User
-from app.schemas.user_schema import *
-from app.exceptions import *
+from app.schemas.user_schema import UserLoginDTO, UserSignupDTO
+from app.exceptions import AuthenticationError, UserAlreadyExistsError, WeakPasswordError
 from flask_jwt_extended import create_access_token
 from sqlalchemy.exc import IntegrityError
 

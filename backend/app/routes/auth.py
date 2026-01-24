@@ -1,10 +1,6 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token
-from app.extensions import bcrypt
-from app.schemas.user_schema import *
-from app.models.user import User
-from app.services.auth import *
-from app.exceptions import *
+from app.schemas.user_schema import user_signup_schema, user_login_schema
+from app.services.auth import verify_user, create_user
 
 #------------------------------------------------------------------------------------------------------------------
 

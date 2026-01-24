@@ -6,7 +6,7 @@ def test_task_view(client, auth_token, tasks):
         }
     )
     data = response.get_json()
-    print(data)
+    
     assert response.status_code == 200
 
     assert data["data"]["task"]["id"] == 1

@@ -1,14 +1,12 @@
 from app.extensions import db
-from app.models.user import User
 from app.models.task import Task
-from app.schemas.user_schema import *
 from app.exceptions import TaskNotFoundError
 from app.dtos.dto_task import TaskCreateDTO, TaskUpdateDTO, TaskGetDTO
 from app.schemas.task_schema import task_complete_schema
-from sqlalchemy.exc import IntegrityError, OperationalError
+from sqlalchemy.exc import IntegrityError
 
 
-def create_task(task_data: TaskCreateDTO, user_id: int) -> None:
+def add_task(task_data: TaskCreateDTO, user_id: int) -> None:
     new_task = Task(**task_data, user_id=user_id)
     
     try:
