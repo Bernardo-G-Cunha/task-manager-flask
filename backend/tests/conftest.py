@@ -56,9 +56,30 @@ def auth_token(app, user):
 def tasks(app, user):
     with app.app_context():
         t1 = Task(user_id=user, name="Test task 1", description="First test task.", due_date="12/02/2027", done=False)
-        t2 = Task(user_id=user, name="Test task 2", description="Second test task.", due_date="09/03/2025", done=False, tags=[Tag(name="Tag1"), Tag(name="Tag2")])
+        t2 = Task(user_id=user, name="Test task 2", description="Second test task.", due_date="09/03/2025", done=False, tags=[Tag(name="tag1"), Tag(name="tag2")])
+        
         db.session.add(t1)
         db.session.add(t2)
         db.session.commit()
 
         return [t1.id, t2.id]
+
+@pytest.fixture
+def many_tasks(app, user):
+    with app.app_context():
+
+        tasks = []
+
+        for i in range(1, 31):  # 30 tasks
+            task = Task(
+                user_id=user,
+                name=f"Task {i}",
+                description=f"Task number {i}",
+                done=False
+            )
+            tasks.append(task)
+
+        db.session.add_all(tasks)
+        db.session.commit()
+
+        return [task.id for task in tasks]
