@@ -47,3 +47,16 @@ def test_signup_duplicate_user(client):
     response = client.post("/auth/signup", json=payload)
 
     assert response.status_code == 409
+
+
+def test_signup_invalid_password(client):
+    response = client.post(
+        "/auth/signup",
+        json={
+            "username": "error_user",
+            "email": "error@email.com",
+            "password": "weak"
+        }
+    )
+
+    assert response.status_code == 400
