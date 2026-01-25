@@ -18,7 +18,6 @@ A simple task manager web application built with Flask and SQLite.
 - Flask
 - SQLite
 - SQLAlchemy + Flask-Migrate
-- HTML5 + CSS3 + JavaScript
 
 ---
 
