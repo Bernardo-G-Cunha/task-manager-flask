@@ -5,7 +5,7 @@ from app.exceptions import TaskNotFoundError
 from app.dtos.dto_task import TaskCreateDTO, TaskUpdateDTO, TaskGetDTO
 from app.schemas.task_schema import task_complete_schema
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import text, desc, asc
+from sqlalchemy import desc, asc
 from sqlalchemy.orm import joinedload
 
 def get_or_create_tags(tag_names: list[str]) -> list[int]:
@@ -20,28 +20,22 @@ def get_or_create_tags(tag_names: list[str]) -> list[int]:
     if not normalized:
         return []
 
-    # 🔎 buscar tags existentes
-    existing = db.session.execute(
-        text("""
-            SELECT id, name
-            FROM tags
-            WHERE name IN :names
-        """),
-        {"names": tuple(normalized)}
-    ).mappings().all()
+    existing = (
+        db.session.query(Tag)
+        .filter(Tag.name.in_(normalized))
+    ).all()
 
-    existing_map = {tag["name"]: tag["id"] for tag in existing}
+    existing_map = {tag.name: tag.id for tag in existing}
 
     tag_ids = []
 
-    # ➕ criar somente as que não existem
     for name in normalized:
         if name in existing_map:
             tag_ids.append(existing_map[name])
         else:
             tag = Tag(name=name)
             db.session.add(tag)
-            db.session.flush()  # 🔥 pega o ID sem commit
+            db.session.flush()
             tag_ids.append(tag.id)
 
     return tag_ids
