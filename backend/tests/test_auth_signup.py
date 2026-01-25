@@ -8,7 +8,7 @@ def test_signup_success(client, app):
         json={
             "username": "bernardo",
             "email": "bernardo@email.com",
-            "password": "test_8_digits"
+            "password": "Valid_password@1"
         }
     )
     data = response.get_json()
@@ -40,7 +40,7 @@ def test_signup_duplicate_user(client):
     payload = {
         "username": "bernardo",
         "email": "bernardo@email.com",
-        "password": "123456rervef"
+        "password": "Valid_password@2"
     }
 
     client.post("/auth/signup", json=payload)

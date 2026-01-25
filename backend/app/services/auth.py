@@ -4,6 +4,7 @@ from app.schemas.user_schema import UserLoginDTO, UserSignupDTO
 from app.exceptions import AuthenticationError, UserAlreadyExistsError, WeakPasswordError
 from flask_jwt_extended import create_access_token
 from sqlalchemy.exc import IntegrityError
+import re
 
 
 def verify_user(login_data: UserLoginDTO) -> str:
@@ -40,7 +41,7 @@ def create_user(signup_data: UserSignupDTO) -> None:
     if user:
         raise UserAlreadyExistsError()
 
-    if len(password) < 8: #Adjust to consider number, letters, capsLock, etc.
+    if not re.match("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$", password):
         raise WeakPasswordError()
     
     hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
