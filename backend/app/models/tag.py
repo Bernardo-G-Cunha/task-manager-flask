@@ -6,7 +6,7 @@ class Tag(db.Model):
     __tablename__ = 'tags'
 
     id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String, nullable = False, unique=True)
+    name = db.Column(db.String(40), nullable = False, unique=True, index=True)
     
     tasks = db.relationship('Task', secondary=tasks_tags, back_populates='tags')
     users = db.relationship('User', secondary=users_tags, back_populates='tags')  

@@ -1,20 +1,38 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.schemas.task_schema import task_list_schema, task_create_schema, task_update_schema
-from app.models import Task
-from app.services.tasks import find_task, add_task, update_task, remove_task
+from app.services.tasks import find_task, add_task, update_task, remove_task, get_tasks_paginated
 
 tasks_bp = Blueprint('tasks', __name__, template_folder='templates')
 
-
-@tasks_bp.route('/', methods=['GET'])
+@tasks_bp.route("/", methods=["GET"])
 @jwt_required()
-def tasks():
-    user_id = int(get_jwt_identity())
-    tasks = Task.query.filter_by(user_id=user_id).all()
-        
-    return jsonify({"success": True, "data": {"tasks": task_list_schema.dump(tasks)}}), 200
-        
+def list_tasks():
+    page = request.args.get("page", 1, type=int)
+    limit = request.args.get("limit", 10, type=int)
+    sort = request.args.get("sort", "created_at")
+    order = request.args.get("order", "desc")
+
+    tasks, total = get_tasks_paginated(
+        user_id=int(get_jwt_identity()),
+        page=page,
+        limit=limit,
+        sort=sort,
+        order=order
+    )
+
+    return jsonify({
+        "success": True,
+        "data": {
+            "tasks": task_list_schema.dump(tasks)
+        },
+        "pagination": {
+            "page": page,
+            "limit": limit,
+            "total": total,
+            "total_pages": (total + limit - 1) // limit
+        }
+    })
 
 @tasks_bp.route('/<int:task_id>', methods=['GET'])
 @jwt_required()

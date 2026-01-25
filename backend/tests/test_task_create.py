@@ -6,7 +6,7 @@ def test_task_create(client, auth_token, tasks, app):
     payload = {
         "name": "Task add test",
         "description": "Task created to test create endpoint.",
-        "tags": [{"name": "Tag add 1"}, {"name": "Tag add 2"}]
+        "tags": [{"name": "Tag add 1"}, {"name": "Tag add 2"}, {"name": "tag1"}]
     }
 
     response = client.post(
