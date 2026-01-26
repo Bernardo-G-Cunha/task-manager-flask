@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from sqlalchemy.exc import OperationalError, IntegrityError
 from marshmallow import ValidationError
+from flask_limiter.errors import RateLimitExceeded
 
 from app.exceptions import (
     ProblemDetailException
@@ -28,6 +29,17 @@ def register_error_handlers(app):
             "detail": exc.messages,
             "instance": request.path
         }), 422
+
+    @app.errorhandler(RateLimitExceeded)
+    def handle_rate_limit_exceeded(exc):
+        return jsonify({
+            "type": "errors/rate-limit-exceeded",
+            "title": "Rate limit exceeded",
+            "status": 429,
+            "detail": "Too many requests. Please wait before trying again.",
+            "instance": request.path
+        }), 429
+
 
     @app.errorhandler(IntegrityError)
     def handle_integrity_error(exc):
