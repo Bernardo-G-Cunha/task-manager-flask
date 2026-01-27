@@ -2,10 +2,12 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.schemas.task_schema import task_list_schema, task_create_schema, task_update_schema
 from app.services.tasks import find_task, add_task, update_task, remove_task, get_tasks_paginated
+from app.extensions import limiter
 
 tasks_bp = Blueprint('tasks', __name__, template_folder='templates')
 
 @tasks_bp.route("/", methods=["GET"])
+@limiter.limit("120 per minute")
 @jwt_required()
 def list_tasks():
     page = request.args.get("page", 1, type=int)
@@ -34,7 +36,9 @@ def list_tasks():
         }
     })
 
+
 @tasks_bp.route('/<int:task_id>', methods=['GET'])
+@limiter.limit("120 per minute")
 @jwt_required()
 def view_task(task_id):
     user_id = get_jwt_identity()
@@ -44,6 +48,7 @@ def view_task(task_id):
 
 
 @tasks_bp.route('/', methods=['POST'])
+@limiter.limit("60 per minute")
 @jwt_required()
 def create_task():
     user_id = get_jwt_identity()
@@ -53,6 +58,7 @@ def create_task():
 
 
 @tasks_bp.route('/<int:task_id>', methods=['PATCH'])
+@limiter.limit("60 per minute")
 @jwt_required()
 def edit_task(task_id):
     user_id = get_jwt_identity()    
@@ -63,8 +69,8 @@ def edit_task(task_id):
     return "", 204
 
 
-
 @tasks_bp.route('/<int:task_id>', methods=['DELETE'])
+@limiter.limit("30 per minute")
 @jwt_required()
 def delete_task(task_id):
     user_id = get_jwt_identity()
