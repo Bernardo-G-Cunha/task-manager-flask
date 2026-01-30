@@ -29,3 +29,14 @@ class WeakPasswordError(ProblemDetailException):
             status=400,
             detail="Password does not meet the minimum strength requirements."
         )
+
+class ForbiddenError(ProblemDetailException):
+    """User does not have required privileges."""
+    def __init__(self):
+        super().__init__(
+            type_="/errors/forbidden",
+            title="Forbidden",
+            status=403,
+            detail="Admin privileges required"
+        
+        )
