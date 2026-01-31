@@ -4,7 +4,7 @@ from app.schemas.task_schema import task_list_schema, task_create_schema, task_u
 from app.services.tasks import find_task, add_task, update_task, remove_task, get_tasks_paginated
 from app.extensions import limiter
 
-tasks_bp = Blueprint('tasks', __name__, template_folder='templates')
+tasks_bp = Blueprint('tasks', __name__)
 
 @tasks_bp.route("/", methods=["GET"])
 @limiter.limit("120 per minute")

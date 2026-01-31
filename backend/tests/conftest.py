@@ -49,8 +49,12 @@ def user(app):
 @pytest.fixture
 def auth_token(app, user):
     with app.app_context():
-        return create_access_token(identity=str(user))
+        return create_access_token(identity=str(user), additional_claims={"role": "USER"})
 
+@pytest.fixture
+def admin_token(app, user):
+    with app.app_context():
+        return create_access_token(identity=str(user), additional_claims={"role": "ADMIN"})
 
 @pytest.fixture
 def tasks(app, user):
@@ -75,7 +79,8 @@ def many_tasks(app, user):
                 user_id=user,
                 name=f"Task {i}",
                 description=f"Task number {i}",
-                done=False
+                tags=[Tag(name=f"Tag{i}"), Tag(name=f"Tag{-i}")],
+                done=True if i%2 == 0 else False
             )
             tasks.append(task)
 

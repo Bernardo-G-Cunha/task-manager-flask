@@ -1,6 +1,6 @@
 from app.extensions import ma
-from app.models.user import User
-from app.dtos.dto_user import UserLoginDTO, UserSignupDTO
+from app.models import User
+from app.dtos import UserLoginDTO, UserSignupDTO
 from marshmallow import Schema, fields, post_load
 
 # Complete schema to keep and return data

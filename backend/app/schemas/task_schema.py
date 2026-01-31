@@ -1,6 +1,6 @@
 from app.models import Task
 from app.extensions import ma
-from app.dtos.dto_task import TaskCreateDTO, TaskUpdateDTO, TaskCompleteDTO
+from app.dtos import TaskCreateDTO, TaskUpdateDTO, TaskCompleteDTO
 from marshmallow import post_load, post_dump
 
 class TaskCompleteSchema(ma.SQLAlchemySchema):
