@@ -6,6 +6,7 @@ from app.extensions import db
 from app.models import User, Task, Tag
 from app.extensions import bcrypt
 from flask_jwt_extended import create_access_token
+from random import randint
 
 @pytest.fixture(scope="function")
 def app():
@@ -88,3 +89,22 @@ def many_tasks(app, user):
         db.session.commit()
 
         return [task.id for task in tasks]
+
+@pytest.fixture
+def many_users(app):
+    with app.app_context():
+
+        users = []
+
+        for i in range(1, 31):
+            user = User(
+                username=f"User{randint(1, 100):03d}",
+                email=f"email{i}@example.com",
+                password = bcrypt.generate_password_hash("123456789").decode("utf-8")
+            )
+            users.append(user)
+
+        db.session.add_all(users)
+        db.session.commit()
+
+        return [user.id for user in users]
