@@ -1,11 +1,12 @@
 from app.extensions import db
-from app.models import Task, Tag
+from app.models import Task, Tag, Event
 from app.exceptions import TaskNotFoundError
 from app.dtos import TaskCreateDTO, TaskUpdateDTO, TaskGetDTO
 from app.schemas import task_complete_schema
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import desc, asc
 from sqlalchemy.orm import joinedload
+from datetime import datetime, timezone
 
 def get_or_create_tags(tag_names: list[str]) -> list[int]:
 
@@ -39,6 +40,25 @@ def get_or_create_tags(tag_names: list[str]) -> list[int]:
 
     return tag_ids
 
+def create_event(
+    *,
+    entity_type: str,
+    entity_id: int,
+    event_type: str,
+    actor_user_id: int | None,
+    old_value: dict | None = None,
+    new_value: dict | None = None,
+):
+    event = Event(
+        entity_type=entity_type,
+        entity_id=entity_id,
+        event_type=event_type,
+        actor_user_id=actor_user_id,
+        old_value=old_value,
+        new_value=new_value,
+    )
+    db.session.add(event)
+
 
 def add_task(task_data: TaskCreateDTO, user_id: int) -> None:
 
@@ -58,6 +78,19 @@ def add_task(task_data: TaskCreateDTO, user_id: int) -> None:
     )
 
     new_task.tags = tags
+
+    create_event(
+        entity_type="task",
+        entity_id=new_task.id,
+        event_type="TASK_CREATED",
+        actor_user_id=user_id,
+        new_value={
+            "name": new_task.name,
+            "done": new_task.done,
+            "description": str(new_task.description) if new_task.description else None,
+            "due_date": str(new_task.due_date) if new_task.due_date else None
+        }
+    )
 
     try:
         db.session.commit()
@@ -81,7 +114,7 @@ def get_tasks_paginated(user_id: int, page: int, limit: int, sort: str, order: s
     query = (
         db.session.query(Task)
         .options(joinedload(Task.tags))
-        .filter(Task.user_id == user_id)
+        .filter(Task.user_id == user_id, Task.deleted_at.is_(None))
         .order_by(direction(sort_column))
         .limit(limit)
         .offset(offset)
@@ -100,7 +133,7 @@ def get_tasks_paginated(user_id: int, page: int, limit: int, sort: str, order: s
 
 def find_task(task_id: int, user_id: int) -> TaskGetDTO:
 
-    task = Task.query.filter_by(id=task_id, user_id=user_id).first()
+    task = Task.query.filter_by(id=task_id, user_id=user_id, deleted_at=None).first()
     
     if task is None:
         raise TaskNotFoundError()
@@ -111,10 +144,17 @@ def find_task(task_id: int, user_id: int) -> TaskGetDTO:
 
 def update_task(update_task_data: TaskUpdateDTO, user_id: int, task_id: int) -> None:
     
-    task = Task.query.filter_by(id=task_id, user_id=user_id).first()
+    task = Task.query.filter_by(id=task_id, user_id=user_id, deleted_at=None).first()
     
     if not task:
         raise TaskNotFoundError()
+
+    old_state = {
+        "name": task.name,
+        "description": str(task.description) if task.description else None,
+        "done": task.done,
+        "due_date": str(task.due_date) if task.due_date else None,
+    }
 
     data = update_task_data.__dict__.copy()
 
@@ -135,6 +175,26 @@ def update_task(update_task_data: TaskUpdateDTO, user_id: int, task_id: int) -> 
 
         task.tags = tags
 
+    new_state = {
+        "name": task.name,
+        "description": str(task.description) if task.description else None,
+        "done": task.done,
+        "due_date": str(task.due_date) if task.due_date else None,
+    }
+
+    event_type = "TASK_COMPLETED" if (
+        old_state["done"] is False and new_state["done"] is True
+    ) else "TASK_UPDATED"
+
+    create_event(
+        entity_type="task",
+        entity_id=task.id,
+        event_type=event_type,
+        actor_user_id=user_id,
+        old_value=old_state,
+        new_value=new_state,
+    )
+
     try:
         db.session.commit()
 
@@ -145,15 +205,26 @@ def update_task(update_task_data: TaskUpdateDTO, user_id: int, task_id: int) -> 
 
 def remove_task(task_id: int, user_id: int) -> None:
 
-    task = Task.query.filter_by(id=task_id, user_id=user_id).first()
-    
+    task = Task.query.filter_by(id=task_id, user_id=user_id, deleted_at=None).first()
+
     if not task:
         raise TaskNotFoundError()
-    
+
+    task.deleted_at = datetime.now(timezone.utc)
+
+    create_event(
+        entity_type="task",
+        entity_id=task.id,
+        event_type="TASK_DELETED",
+        actor_user_id=user_id,
+        old_value={
+            "name": task.name,
+            "done": task.done,
+        }
+    )
+
     try:
-        db.session.delete(task)
         db.session.commit()
-    
     except IntegrityError:
         db.session.rollback()
         raise
