@@ -10,4 +10,10 @@ class UserSignupDTO:
 class UserLoginDTO:
     email: str
     password: str
+
+@dataclass
+class UserListDTO:
+    id: int
+    username: str
+    email: str
     

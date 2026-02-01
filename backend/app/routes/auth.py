@@ -5,7 +5,7 @@ from app.extensions import limiter
 
 #------------------------------------------------------------------------------------------------------------------
 
-auth_bp = Blueprint('auth', __name__, template_folder='templates')
+auth_bp = Blueprint('auth', __name__)
 
 
 @auth_bp.route('/', methods=['POST'])

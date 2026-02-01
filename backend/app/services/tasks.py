@@ -1,9 +1,8 @@
 from app.extensions import db
-from app.models.task import Task
-from app.models.tag import Tag
+from app.models import Task, Tag
 from app.exceptions import TaskNotFoundError
-from app.dtos.dto_task import TaskCreateDTO, TaskUpdateDTO, TaskGetDTO
-from app.schemas.task_schema import task_complete_schema
+from app.dtos import TaskCreateDTO, TaskUpdateDTO, TaskGetDTO
+from app.schemas import task_complete_schema
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import desc, asc
 from sqlalchemy.orm import joinedload

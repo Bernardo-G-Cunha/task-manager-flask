@@ -1,6 +1,6 @@
 from app.extensions import bcrypt, db
-from app.models.user import User
-from app.schemas.user_schema import UserLoginDTO, UserSignupDTO
+from app.models import User
+from app.dtos import UserLoginDTO, UserSignupDTO
 from app.exceptions import AuthenticationError, UserAlreadyExistsError, WeakPasswordError
 from flask_jwt_extended import create_access_token
 from sqlalchemy.exc import IntegrityError
@@ -8,13 +8,6 @@ import re
 
 
 def verify_user(login_data: UserLoginDTO) -> str:
-    """
-    Verify if the user  request exists
-    
-    args:
-        login_data: UserLoginDTO with
-    """
-
     
     email = login_data.email
     password = login_data.password
@@ -25,7 +18,7 @@ def verify_user(login_data: UserLoginDTO) -> str:
     if not user or not bcrypt.check_password_hash(user.password, password):
         raise AuthenticationError()
     
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=user.id, additional_claims={"role": user.role})
     
     return access_token
 

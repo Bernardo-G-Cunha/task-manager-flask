@@ -6,6 +6,7 @@ from app.extensions import db
 from app.models import User, Task, Tag
 from app.extensions import bcrypt
 from flask_jwt_extended import create_access_token
+from random import randint
 
 @pytest.fixture(scope="function")
 def app():
@@ -49,8 +50,12 @@ def user(app):
 @pytest.fixture
 def auth_token(app, user):
     with app.app_context():
-        return create_access_token(identity=str(user))
+        return create_access_token(identity=str(user), additional_claims={"role": "USER"})
 
+@pytest.fixture
+def admin_token(app, user):
+    with app.app_context():
+        return create_access_token(identity=str(user), additional_claims={"role": "ADMIN"})
 
 @pytest.fixture
 def tasks(app, user):
@@ -70,12 +75,14 @@ def many_tasks(app, user):
 
         tasks = []
 
-        for i in range(1, 31):  # 30 tasks
+        for i in range(1, 31):
             task = Task(
                 user_id=user,
                 name=f"Task {i}",
                 description=f"Task number {i}",
-                done=False
+                tags=[Tag(name=f"Tag{i}"), Tag(name=f"Tag{-i}")],
+                done=True if i%2 == 0 else False,
+                creation_date=f"20{randint(1, 99):02d}-{randint(1,12):02d}-{randint(1,28):02d}"
             )
             tasks.append(task)
 
@@ -83,3 +90,22 @@ def many_tasks(app, user):
         db.session.commit()
 
         return [task.id for task in tasks]
+
+@pytest.fixture
+def many_users(app):
+    with app.app_context():
+
+        users = []
+
+        for i in range(1, 31):
+            user = User(
+                username=f"User{randint(1, 100):03d}",
+                email=f"email{i}@example.com",
+                password = bcrypt.generate_password_hash("123456789").decode("utf-8")
+            )
+            users.append(user)
+
+        db.session.add_all(users)
+        db.session.commit()
+
+        return [user.id for user in users]
