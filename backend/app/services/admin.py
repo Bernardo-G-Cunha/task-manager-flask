@@ -1,6 +1,6 @@
 from app.extensions import db
-from app.models import Task, User
-from app.schemas import task_list_schema, user_list_schema
+from app.models import Task, User, Event
+from app.schemas import task_list_schema, user_list_schema, event_list_schema
 from app.dtos import PaginatedResult
 from sqlalchemy import desc, asc
 from sqlalchemy.orm import joinedload
@@ -81,6 +81,58 @@ def get_all_users(*, page: int, limit: int, sort: str, order: str, filters: dict
 
     return PaginatedResult(
         items=user_list_schema.dump(users),
+        page=page,
+        limit=limit,
+        total=total
+    )
+
+def get_events(*, page: int, limit: int, sort: str, order: str, filters: dict):
+    
+    offset = (page - 1) * limit
+
+    column_map = {
+        "entity_type": Event.entity_type,
+        "entity_id": Event.entity_id,
+        "event_type": Event.event_type,
+        "actor_user_id": Event.actor_user_id,
+        "created_at": Event.created_at
+    }
+
+    sort_column = column_map.get(sort, Event.created_at)
+    direction = desc if order == "desc" else asc
+
+    query = Event.query
+
+    if filters.get("entity_type"):
+        query = query.filter(Event.entity_type == filters["entity_type"])
+
+    if filters.get("entity_id"):
+        query = query.filter(Event.entity_id == int(filters["entity_id"]))
+
+    if filters.get("event_type"):
+        query = query.filter(Event.event_type == filters["event_type"])
+
+    if filters.get("actor_user_id"):
+        query = query.filter(Event.actor_user_id == int(filters["actor_user_id"]))
+
+    if filters.get("from"):
+        query = query.filter(Event.created_at >= filters["from"])
+
+    if filters.get("to"):
+        query = query.filter(Event.created_at <= filters["to"])
+
+    total = query.count()
+
+    events = (
+        query
+        .order_by(direction(sort_column))
+        .limit(limit)
+        .offset(offset)
+        .all()
+    )
+
+    return PaginatedResult(
+        items=event_list_schema.dump(events),
         page=page,
         limit=limit,
         total=total
