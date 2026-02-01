@@ -75,13 +75,14 @@ def many_tasks(app, user):
 
         tasks = []
 
-        for i in range(1, 31):  # 30 tasks
+        for i in range(1, 31):
             task = Task(
                 user_id=user,
                 name=f"Task {i}",
                 description=f"Task number {i}",
                 tags=[Tag(name=f"Tag{i}"), Tag(name=f"Tag{-i}")],
-                done=True if i%2 == 0 else False
+                done=True if i%2 == 0 else False,
+                creation_date=f"20{randint(1, 99):02d}-{randint(1,12):02d}-{randint(1,28):02d}"
             )
             tasks.append(task)
 

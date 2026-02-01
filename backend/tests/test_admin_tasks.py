@@ -15,6 +15,7 @@ def test_admin_name_filter(client, admin_token, many_tasks):
     assert data["data"]["tasks"][0]["name"] == "Task 12"
     assert res.status_code == 200
 
+
 def test_admin_done_filter(client, admin_token, many_tasks):
     res = client.get("/admin/tasks?page=2&limit=10&done=true", headers={
         "Authorization": f"Bearer {admin_token}"
@@ -22,4 +23,16 @@ def test_admin_done_filter(client, admin_token, many_tasks):
     data = res.get_json()
 
     assert str(data["data"]["tasks"][0]["done"]) == "True"    
+    assert res.status_code == 200
+
+
+def test_admin_creation_sort(client, admin_token, many_tasks):
+    res = client.get("/admin/tasks?page=2&limit=11&sort=creation_date&order=asc", headers={
+        "Authorization": f"Bearer {admin_token}"
+    })
+    data = res.get_json()
+    
+    assert data["data"]["tasks"][2]["creation_date"] < data["data"]["tasks"][3]["creation_date"]
+    assert data["pagination"]["limit"] == 11
+    assert data["pagination"]["page"] == 2
     assert res.status_code == 200
