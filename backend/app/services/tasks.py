@@ -1,5 +1,6 @@
 from app.extensions import db
-from app.models import Task, Tag, Event
+from app.models import Task, Tag
+from app.services.events import create_event
 from app.exceptions import TaskNotFoundError
 from app.dtos import TaskCreateDTO, TaskUpdateDTO, TaskGetDTO
 from app.schemas import task_complete_schema
@@ -39,25 +40,6 @@ def get_or_create_tags(tag_names: list[str]) -> list[int]:
             tag_ids.append(tag.id)
 
     return tag_ids
-
-def create_event(
-    *,
-    entity_type: str,
-    entity_id: int,
-    event_type: str,
-    actor_user_id: int | None,
-    old_value: dict | None = None,
-    new_value: dict | None = None,
-):
-    event = Event(
-        entity_type=entity_type,
-        entity_id=entity_id,
-        event_type=event_type,
-        actor_user_id=actor_user_id,
-        old_value=old_value,
-        new_value=new_value,
-    )
-    db.session.add(event)
 
 
 def add_task(task_data: TaskCreateDTO, user_id: int) -> None:

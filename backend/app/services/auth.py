@@ -1,5 +1,6 @@
 from app.extensions import bcrypt, db
 from app.models import User
+from app.services.events import create_event
 from app.dtos import UserLoginDTO, UserSignupDTO
 from app.exceptions import AuthenticationError, UserAlreadyExistsError, WeakPasswordError
 from flask_jwt_extended import create_access_token
@@ -13,7 +14,7 @@ def verify_user(login_data: UserLoginDTO) -> str:
     password = login_data.password
 
     #Query user in database and test it
-    user = User.query.filter_by(email=email).first()
+    user = User.query.filter_by(email=email, deleted_at=None).first()
 
     if not user or not bcrypt.check_password_hash(user.password, password):
         raise AuthenticationError()
@@ -42,6 +43,20 @@ def create_user(signup_data: UserSignupDTO) -> None:
     new_user = User(username=username, email=email, password=hashed_password)
     try:
         db.session.add(new_user)
+
+        db.session.flush()
+
+        create_event(
+            entity_type="user",
+            entity_id=new_user.id,
+            event_type="USER_CREATED",
+            actor_user_id=None,
+            new_value={
+                "username": new_user.username,
+                "email": new_user.email
+            }
+        )
+
         db.session.commit()
 
     except IntegrityError as e:
