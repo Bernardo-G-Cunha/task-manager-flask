@@ -1,11 +1,8 @@
 from flask import jsonify
-#from flask_jwt_extended import JWTManager
-
 
 def register_jwt_handlers(jwt):
     @jwt.invalid_token_loader
     def invalid_token_callback(error):
-        # Token malformado / assinatura inválida
         return jsonify({
             "type": "/errors/auth/invalid-token",
             "title": "Invalid token",
@@ -15,7 +12,6 @@ def register_jwt_handlers(jwt):
 
     @jwt.unauthorized_loader
     def missing_token_callback(error):
-        # Token não enviado
         return jsonify({
             "type": "/errors/auth/missing-token",
             "title": "Missing token",

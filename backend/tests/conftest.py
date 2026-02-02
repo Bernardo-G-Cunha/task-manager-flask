@@ -1,9 +1,9 @@
-# tests/conftest.py
 import pytest
 import os
+from datetime import datetime, timezone
 from app import create_app
 from app.extensions import db
-from app.models import User, Task, Tag
+from app.models import User, Task, Tag, Event
 from app.extensions import bcrypt
 from flask_jwt_extended import create_access_token
 from random import randint
@@ -109,3 +109,23 @@ def many_users(app):
         db.session.commit()
 
         return [user.id for user in users]
+
+@pytest.fixture
+def many_events(many_users, many_tasks):
+    events = []
+
+    for i in range(20):
+        event = Event(
+            entity_type="task",
+            entity_id=many_tasks[i % len(many_tasks)],
+            event_type="TASK_UPDATED",
+            actor_user_id=many_users[0],
+            old_value={"done": False},
+            new_value={"done": True},
+            created_at=datetime.now(timezone.utc),
+        )
+        events.append(event)
+        db.session.add(event)
+
+    db.session.commit()
+    return [event.id for event in events]

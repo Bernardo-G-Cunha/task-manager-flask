@@ -16,8 +16,7 @@ def test_task_delete(client, auth_token, tasks, app):
 
     with app.app_context():
         task = db.session.get(Task, task_id)
-
-        assert task is None
+        assert task.deleted_at is not None
 
 
 def test_error_task_delete(client, auth_token, tasks):

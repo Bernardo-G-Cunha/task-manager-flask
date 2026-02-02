@@ -1,12 +1,9 @@
 from flask import Blueprint, request, jsonify
-from app.schemas.user_schema import user_signup_schema, user_login_schema
-from app.services.auth import verify_user, create_user
+from app.schemas import user_signup_schema, user_login_schema
+from app.services import verify_user, create_user
 from app.extensions import limiter
 
-#------------------------------------------------------------------------------------------------------------------
-
 auth_bp = Blueprint('auth', __name__)
-
 
 @auth_bp.route('/', methods=['POST'])
 @limiter.limit("5 per minute")

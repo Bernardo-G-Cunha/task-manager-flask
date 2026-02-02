@@ -10,6 +10,8 @@ class Task(db.Model):
     done = db.Column(db.Boolean, default=False, nullable=False)
     creation_date = db.Column(db.DateTime(timezone=True), server_default=db.func.now(), nullable=False)
     
+    deleted_at = db.Column(db.DateTime(timezone=True), nullable=True)
+
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False, index=True)
 
     user = db.relationship('User', back_populates='tasks')

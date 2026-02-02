@@ -1,9 +1,8 @@
-# app/dtos/pagination.py
 from dataclasses import dataclass
 from typing import List, Any
 
 @dataclass
-class PaginatedResult:
+class PaginatedResultDTO:
     items: List[Any]
     page: int
     limit: int

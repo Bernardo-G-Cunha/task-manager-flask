@@ -1,4 +1,4 @@
-from app.models.task import Task
+from app.models import Task, Event
 from app.extensions import db
 
 def test_task_create(client, auth_token, tasks, app):
@@ -20,7 +20,9 @@ def test_task_create(client, auth_token, tasks, app):
 
     with app.app_context():
         task = Task.query.filter_by(name="Task add test").first()
+        event = Event.query.filter_by(entity_id=task.id).first()
         assert task is not None
+        assert event.event_type == "TASK_CREATED"
 
 def test_error_task_create(client, auth_token, tasks, app):
     

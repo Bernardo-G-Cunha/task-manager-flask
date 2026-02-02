@@ -1,4 +1,4 @@
-from app.models.user import User
+from app.models import User, Event
 from app.extensions import db
 
 
@@ -19,17 +19,18 @@ def test_signup_success(client, app):
 
     with app.app_context():
         user = db.session.query(User).all()
-        
+        event = db.session.query(Event).first()
+
         assert user is not None
         assert user[0].username == "bernardo"
+        assert event.event_type == "USER_CREATED"
 
 
 def test_signup_invalid_data(client):
     response = client.post(
         "/auth/signup",
         json={
-            "email": "email-sem-username"
-            # Missing needed fields
+            "email": "email_sem_username@gmail.com"
         }
     )
 

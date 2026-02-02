@@ -1,3 +1,9 @@
-from app.exceptions.base import ProblemDetailException
-from app.exceptions.auth_exceptions import *
-from app.exceptions.task_exceptions import *
+from .base import ProblemDetailException
+from .task_exceptions import TaskNotFoundError
+from .error_handlers import register_error_handlers
+
+__all__ = [
+    "ProblemDetailException",
+    "TaskNotFoundError",
+    "register_error_handlers",
+]

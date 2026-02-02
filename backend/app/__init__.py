@@ -2,11 +2,9 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from app.extensions import db, ma, jwt, migrate, bcrypt
-from app.routes.auth import auth_bp
-from app.routes.tasks import tasks_bp
-from app.routes.admin import admin_bp
-from app.exceptions.error_handlers import register_error_handlers
-from app.exceptions.jwt_handlers import register_jwt_handlers
+from app.routes import auth_bp, tasks_bp, admin_bp
+from app.exceptions import register_error_handlers
+from app.auth import register_jwt_handlers
 from app.extensions import limiter
 
 
