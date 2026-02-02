@@ -17,10 +17,6 @@ class TaskCompleteSchema(ma.SQLAlchemySchema):
 
     tags = ma.Nested("TagSchema", many=True)
 
-    @post_dump
-    def make_dto(self, data, **kwargs):
-        return TaskCompleteDTO(**data)
-
 
 class TaskCreateSchema(ma.SQLAlchemySchema):
     class Meta:

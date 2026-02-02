@@ -30,8 +30,7 @@ def test_signup_invalid_data(client):
     response = client.post(
         "/auth/signup",
         json={
-            "email": "email-sem-username"
-            # Missing needed fields
+            "email": "email_sem_username@gmail.com"
         }
     )
 

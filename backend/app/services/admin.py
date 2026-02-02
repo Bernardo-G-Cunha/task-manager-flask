@@ -1,11 +1,11 @@
 from app.extensions import db
 from app.models import Task, User, Event
 from app.schemas import task_list_schema, user_list_schema, event_list_schema
-from app.dtos import PaginatedResult
+from app.dtos import PaginatedResultDTO
 from sqlalchemy import desc, asc
 from sqlalchemy.orm import joinedload
 
-def get_all_tasks(*, page: int, limit: int, sort: str, order: str, filters: dict) -> PaginatedResult:
+def get_all_tasks(*, page: int, limit: int, sort: str, order: str, filters: dict) -> PaginatedResultDTO:
 
     offset = (page - 1) * limit
 
@@ -39,14 +39,14 @@ def get_all_tasks(*, page: int, limit: int, sort: str, order: str, filters: dict
         .all()
     )
 
-    return PaginatedResult(
+    return PaginatedResultDTO(
         items=task_list_schema.dump(tasks),
         page=page,
         limit=limit,
         total=total
     )
 
-def get_all_users(*, page: int, limit: int, sort: str, order: str, filters: dict) -> PaginatedResult:
+def get_all_users(*, page: int, limit: int, sort: str, order: str, filters: dict) -> PaginatedResultDTO:
 
     offset = (page - 1) * limit
 
@@ -79,14 +79,14 @@ def get_all_users(*, page: int, limit: int, sort: str, order: str, filters: dict
         .all()
     )
 
-    return PaginatedResult(
+    return PaginatedResultDTO(
         items=user_list_schema.dump(users),
         page=page,
         limit=limit,
         total=total
     )
 
-def get_events(*, page: int, limit: int, sort: str, order: str, filters: dict):
+def get_events(*, page: int, limit: int, sort: str, order: str, filters: dict) -> PaginatedResultDTO:
     
     offset = (page - 1) * limit
 
@@ -131,7 +131,7 @@ def get_events(*, page: int, limit: int, sort: str, order: str, filters: dict):
         .all()
     )
 
-    return PaginatedResult(
+    return PaginatedResultDTO(
         items=event_list_schema.dump(events),
         page=page,
         limit=limit,

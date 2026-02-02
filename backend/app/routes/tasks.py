@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.schemas.task_schema import task_list_schema, task_create_schema, task_update_schema
-from app.services.tasks import find_task, add_task, update_task, remove_task, get_tasks_paginated
+from app.schemas import task_list_schema, task_create_schema, task_update_schema
+from app.services import find_task, add_task, update_task, remove_task, get_tasks_paginated
 from app.extensions import limiter
 
 tasks_bp = Blueprint('tasks', __name__)
@@ -15,7 +15,7 @@ def list_tasks():
     sort = request.args.get("sort", "created_at")
     order = request.args.get("order", "desc")
 
-    tasks, total = get_tasks_paginated(
+    result = get_tasks_paginated(
         user_id=int(get_jwt_identity()),
         page=page,
         limit=limit,
@@ -26,13 +26,13 @@ def list_tasks():
     return jsonify({
         "success": True,
         "data": {
-            "tasks": task_list_schema.dump(tasks)
+            "tasks": result.items
         },
         "pagination": {
-            "page": page,
-            "limit": limit,
-            "total": total,
-            "total_pages": (total + limit - 1) // limit
+            "page": result.page,
+            "limit": result.limit,
+            "total": result.total,
+            "total_pages": result.total_pages
         }
     })
 

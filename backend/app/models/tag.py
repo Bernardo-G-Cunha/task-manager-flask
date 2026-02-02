@@ -1,6 +1,4 @@
 from app.extensions import db
-#from app.models import tasks_tags  
-#from app.models import users_tags 
 
 class Tag(db.Model):
     __tablename__ = 'tags'

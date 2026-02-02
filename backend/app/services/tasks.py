@@ -2,8 +2,8 @@ from app.extensions import db
 from app.models import Task, Tag
 from app.services.events import create_event
 from app.exceptions import TaskNotFoundError
-from app.dtos import TaskCreateDTO, TaskUpdateDTO, TaskGetDTO
-from app.schemas import task_complete_schema
+from app.dtos import TaskCreateDTO, TaskUpdateDTO, TaskCompleteDTO, PaginatedResultDTO
+from app.schemas import task_complete_schema, task_list_schema
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import desc, asc
 from sqlalchemy.orm import joinedload
@@ -110,19 +110,24 @@ def get_tasks_paginated(user_id: int, page: int, limit: int, sort: str, order: s
         .count()
     )
 
-    return tasks, total
+    return PaginatedResultDTO(
+        items=task_list_schema.dump(tasks),
+        page=page,
+        limit=limit,
+        total=total
+    )
 
 
-def find_task(task_id: int, user_id: int) -> TaskGetDTO:
+def find_task(task_id: int, user_id: int) -> TaskCompleteDTO:
 
     task = Task.query.filter_by(id=task_id, user_id=user_id, deleted_at=None).first()
     
     if task is None:
         raise TaskNotFoundError()
     
-    taskDTO = task_complete_schema.dump(task)
-
-    return taskDTO
+    data = task_complete_schema.dump(task)
+    
+    return TaskCompleteDTO(**data)
 
 def update_task(update_task_data: TaskUpdateDTO, user_id: int, task_id: int) -> None:
     

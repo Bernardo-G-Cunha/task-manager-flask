@@ -2,7 +2,7 @@ from app.extensions import bcrypt, db
 from app.models import User
 from app.services.events import create_event
 from app.dtos import UserLoginDTO, UserSignupDTO
-from app.exceptions import AuthenticationError, UserAlreadyExistsError, WeakPasswordError
+from app.auth import AuthenticationError, UserAlreadyExistsError, WeakPasswordError
 from flask_jwt_extended import create_access_token
 from sqlalchemy.exc import IntegrityError
 import re

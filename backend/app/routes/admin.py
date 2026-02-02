@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
-from app.auth.permissions import admin_required
+from app.auth import admin_required
 from app.extensions import limiter
-from app.services.admin import get_all_tasks, get_all_users, get_events
+from app.services import get_all_tasks, get_all_users, get_events
 
 admin_bp = Blueprint("admin", __name__)
 

@@ -3,7 +3,7 @@ from app.models import User
 from app.dtos import UserLoginDTO, UserSignupDTO, UserListDTO
 from marshmallow import Schema, fields, post_load
 
-# Complete schema to keep and return data
+
 class UserCompleteSchema(ma.SQLAlchemySchema):
     class Meta:
         model = User
@@ -18,24 +18,30 @@ class UserCompleteSchema(ma.SQLAlchemySchema):
     tags = ma.Nested("TagSchema", many=True)
 
 
-# Login only schema
-class UserLoginSchema(Schema):
-    email = fields.Email(required=True)
-    password = fields.Str(required=True)
+class UserLoginSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = User
+
+    email = ma.auto_field(required=True)
+    password = ma.auto_field(required=True)
 
     @post_load
     def make_dto(self, data, **kwargs):
         return UserLoginDTO(**data)
 
-# Signup only schema
-class UserSignupSchema(Schema):
-    username = fields.Str(required=True)
-    email = fields.Email(required=True)
-    password = fields.Str(required=True)
+
+class UserSignupSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = User
+
+    username = ma.auto_field(required=True)
+    email = ma.auto_field(required=True)
+    password = ma.auto_field(required=True)
 
     @post_load
     def make_dto(self, data, **kwargs):
         return UserSignupDTO(**data)
+
 
 class UserListSchema(ma.SQLAlchemySchema):
     class Meta:
