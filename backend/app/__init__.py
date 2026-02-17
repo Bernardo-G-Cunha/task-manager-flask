@@ -43,9 +43,9 @@ def create_app(test_config=None):
     CORS(app, origins=["http://127.0.0.1:5500"], supports_credentials=True)
 
     # Register blueprints
-    app.register_blueprint(auth_bp, url_prefix='/auth')
-    app.register_blueprint(tasks_bp, url_prefix='/tasks')
-    app.register_blueprint(admin_bp, url_prefix="/admin")
+    app.register_blueprint(auth_bp, url_prefix='/api/v1/auth')
+    app.register_blueprint(tasks_bp, url_prefix='/api/v1/tasks')
+    app.register_blueprint(admin_bp, url_prefix="/api/v1/admin")
     
     register_jwt_handlers(jwt)
     register_error_handlers(app)

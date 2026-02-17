@@ -6,7 +6,7 @@ def test_task_delete(client, auth_token, tasks, app):
     task_id = tasks[0]
     
     response = client.delete(
-        f"/tasks/{task_id}",
+        f"api/v1/tasks/{task_id}",
         headers={
             "Authorization": f"Bearer {auth_token}"
         }
@@ -21,7 +21,7 @@ def test_task_delete(client, auth_token, tasks, app):
 
 def test_error_task_delete(client, auth_token, tasks):
     response = client.delete(
-        "/tasks/6",
+        "api/v1/tasks/6",
         headers={
             "Authorization": f"Bearer {auth_token}"
         }

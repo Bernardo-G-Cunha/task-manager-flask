@@ -1,6 +1,6 @@
 def test_login_success(client, user):
     response = client.post(
-        "/auth/",
+        "api/v1/auth/",
         json={
             "email": "test@example.com",
             "password": "123456789"
@@ -15,7 +15,7 @@ def test_login_success(client, user):
 
 def test_login_authentication_error(client, user):
     response = client.post(
-        "/auth/",
+        "api/v1/auth/",
         json={
             "email": "false@example.com",
             "password": "123456789"

@@ -1,5 +1,5 @@
 def test_admin_access_denied(client, auth_token):
-    res = client.get("/admin/tasks", headers={
+    res = client.get("api/v1/admin/tasks", headers={
         "Authorization": f"Bearer {auth_token}"
     })
 
@@ -7,7 +7,7 @@ def test_admin_access_denied(client, auth_token):
 
 
 def test_admin_name_filter(client, admin_token, many_tasks):
-    res = client.get("/admin/tasks?page=1&limit=10&name=Task%2012", headers={
+    res = client.get("api/v1/admin/tasks?page=1&limit=10&name=Task%2012", headers={
         "Authorization": f"Bearer {admin_token}"
     })
     data = res.get_json()
@@ -17,7 +17,7 @@ def test_admin_name_filter(client, admin_token, many_tasks):
 
 
 def test_admin_done_filter(client, admin_token, many_tasks):
-    res = client.get("/admin/tasks?page=2&limit=10&done=true", headers={
+    res = client.get("api/v1/admin/tasks?page=2&limit=10&done=true", headers={
         "Authorization": f"Bearer {admin_token}"
     })
     data = res.get_json()
@@ -27,7 +27,7 @@ def test_admin_done_filter(client, admin_token, many_tasks):
 
 
 def test_admin_creation_sort(client, admin_token, many_tasks):
-    res = client.get("/admin/tasks?page=2&limit=11&sort=creation_date&order=asc", headers={
+    res = client.get("api/v1/admin/tasks?page=2&limit=11&sort=creation_date&order=asc", headers={
         "Authorization": f"Bearer {admin_token}"
     })
     data = res.get_json()

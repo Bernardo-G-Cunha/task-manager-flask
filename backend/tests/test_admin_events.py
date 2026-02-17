@@ -1,7 +1,7 @@
 def test_admin_can_list_events(client, admin_token, many_events):
     
     res = client.get(
-        "/admin/events?page=1&limit=10",
+        "api/v1/admin/events?page=1&limit=10",
         headers={"Authorization": f"Bearer {admin_token}"}
     )
 
@@ -16,7 +16,7 @@ def test_admin_can_list_events(client, admin_token, many_events):
 def test_user_cannot_access_events(client, auth_token):
     
     res = client.get(
-        "/admin/events?page=1&limit=10",
+        "api/v1/admin/events?page=1&limit=10",
         headers={"Authorization": f"Bearer {auth_token}"}
     )
 
@@ -26,7 +26,7 @@ def test_user_cannot_access_events(client, auth_token):
 def test_admin_events_sorted_by_created_at_desc(client, admin_token, many_events):
     
     res = client.get(
-        "/admin/events?page=1&limit=5&sort=created_at&order=desc",
+        "api/v1/admin/events?page=1&limit=5&sort=created_at&order=desc",
         headers={"Authorization": f"Bearer {admin_token}"}
     )
 
@@ -40,7 +40,7 @@ def test_admin_events_sorted_by_created_at_desc(client, admin_token, many_events
 def test_admin_filter_by_entity_type(client, admin_token, many_events):
     
     res = client.get(
-        "/admin/events?entity_type=task",
+        "api/v1/admin/events?entity_type=task",
         headers={"Authorization": f"Bearer {admin_token}"}
     )
 

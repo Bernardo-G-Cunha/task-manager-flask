@@ -10,7 +10,7 @@ def test_task_create(client, auth_token, tasks, app):
     }
 
     response = client.post(
-        f"/tasks/",
+        f"api/v1/tasks/",
         headers={
             "Authorization": f"Bearer {auth_token}"
         }, json=payload
@@ -32,7 +32,7 @@ def test_error_task_create(client, auth_token, tasks, app):
     }
 
     response = client.post(
-        f"/tasks/",
+        f"api/v1/tasks/",
         headers={
             "Authorization": f"Bearer {auth_token}"
         }, json=payload

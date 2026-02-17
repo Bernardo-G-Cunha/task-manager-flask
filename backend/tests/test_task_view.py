@@ -1,6 +1,6 @@
 def test_task_view(client, auth_token, tasks):
     response = client.get(
-        "/tasks/1",
+        "api/v1/tasks/1",
         headers={
             "Authorization": f"Bearer {auth_token}"
         }
@@ -13,7 +13,7 @@ def test_task_view(client, auth_token, tasks):
     
 def test_error_task_view(client, auth_token, tasks):
     response = client.get(
-        "/tasks/6",
+        "api/v1/tasks/6",
         headers={
             "Authorization": f"Bearer {auth_token}"
         }
