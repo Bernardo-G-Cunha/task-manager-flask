@@ -3,13 +3,15 @@ from .task_schema import (
     task_update_schema,
     task_list_schema,
     task_complete_schema,
+    task_list_admin_schema
 )
 
 from .user_schema import (
     user_complete_schema,
     user_list_schema,
     user_login_schema,
-    user_signup_schema
+    user_signup_schema,
+    user_list_admin_schema
 )
 
 from .tag_schema import tag_schema
@@ -29,6 +31,8 @@ __all__ = [
     "user_list_schema",
     "user_login_schema",
     "user_signup_schema",
+    "user_list_admin_schema",
     "event_schema",
-    "event_list_schema"
+    "event_list_schema",
+    "task_list_admin_schema"
 ]

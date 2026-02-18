@@ -17,6 +17,21 @@ class TaskCompleteSchema(ma.SQLAlchemySchema):
 
     tags = ma.Nested("TagSchema", many=True)
 
+class TaskAdminSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Task
+
+    id = ma.auto_field(dump_only=True)
+    name = ma.auto_field(required=True)
+    description = ma.auto_field()
+    due_date = ma.auto_field()
+    done = ma.auto_field()
+    creation_date = ma.auto_field(format='iso', dump_only=True, allow_none=True)
+    deleted_at = ma.auto_field()
+    user_id = ma.auto_field()
+
+    tags = ma.Nested("TagSchema", many=True)    
+
 
 class TaskCreateSchema(ma.SQLAlchemySchema):
     class Meta:
@@ -54,4 +69,5 @@ class TaskUpdateSchema(ma.SQLAlchemySchema):
 task_create_schema = TaskCreateSchema()
 task_update_schema = TaskUpdateSchema()
 task_list_schema = TaskCompleteSchema(many=True)
+task_list_admin_schema = TaskAdminSchema(many=True)
 task_complete_schema = TaskCompleteSchema()

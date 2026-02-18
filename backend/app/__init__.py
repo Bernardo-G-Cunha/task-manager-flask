@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from flask_cors import CORS
+from flasgger import Swagger
 from app.extensions import db, ma, jwt, migrate, bcrypt
 from app.routes import auth_bp, tasks_bp, admin_bp
 from app.exceptions import register_error_handlers
@@ -32,6 +33,40 @@ def create_app(test_config=None):
             )
 
     app.url_map.strict_slashes = False
+
+    swagger_config = {
+        "headers": [],
+        "specs": [
+            {
+                "endpoint": "apispec",
+                "route": "/apispec.json",
+                "rule_filter": lambda rule: True,
+                "model_filter": lambda tag: True,
+            }
+        ],
+        "swagger_ui": True,
+        "specs_route": "/docs/",
+    }
+
+    template = {
+    "swagger": "2.0",
+    "info": {
+        "title": "Task Manager API",
+        "description": "Production-ready REST API",
+        "version": "1.0"
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Enter: Bearer <JWT>"
+        }
+    }
+}
+
+
+    swagger = Swagger(app, config=swagger_config, template=template)
 
     db.init_app(app)
     ma.init_app(app)

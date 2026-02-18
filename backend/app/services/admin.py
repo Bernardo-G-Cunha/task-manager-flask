@@ -1,6 +1,6 @@
 from app.extensions import db
 from app.models import Task, User, Event
-from app.schemas import task_list_schema, user_list_schema, event_list_schema
+from app.schemas import task_list_admin_schema, user_list_admin_schema, event_list_schema
 from app.dtos import PaginatedResultDTO
 from sqlalchemy import desc, asc
 from sqlalchemy.orm import joinedload
@@ -40,7 +40,7 @@ def get_all_tasks(*, page: int, limit: int, sort: str, order: str, filters: dict
     )
 
     return PaginatedResultDTO(
-        items=task_list_schema.dump(tasks),
+        items=task_list_admin_schema.dump(tasks),
         page=page,
         limit=limit,
         total=total
@@ -80,7 +80,7 @@ def get_all_users(*, page: int, limit: int, sort: str, order: str, filters: dict
     )
 
     return PaginatedResultDTO(
-        items=user_list_schema.dump(users),
+        items=user_list_admin_schema.dump(users),
         page=page,
         limit=limit,
         total=total
