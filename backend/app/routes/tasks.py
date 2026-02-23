@@ -24,18 +24,22 @@ def list_tasks():
       - name: page
         in: query
         type: integer
+        default: 1
         required: false
       - name: limit
         in: query
         type: integer
+        default: 10
         required: false
       - name: sort
         in: query
         type: string
+        default: created_at
         required: false
       - name: order
         in: query
         type: string
+        default: desc
         enum: [asc, desc]
         required: false
     responses:
