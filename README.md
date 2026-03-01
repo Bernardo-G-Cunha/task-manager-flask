@@ -49,13 +49,12 @@ app/
     schemas/
     services/
     extensions.py
-
+    config.py
 migrations/
-
 tests/
-
 docker-compose.yml
 requirements.txt
+requirements-dev.txt
 run.py
 .env.example
 README.md
