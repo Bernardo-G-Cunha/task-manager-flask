@@ -76,28 +76,24 @@ Create virtual environment
 
 ```
 python -m venv venv
-source venv/bin/activate
+source venv/bin/activate #Linux
+.venv\Scripts\activate # Windows
 ```
 
 Install dependencies
 
 ```
 pip install -r requirements.txt
+pip install -e .
 ```
 
 ---
 
 ## Environment variables
 
-Create `.env`
+Copy example file
 
-```
-SECRET_KEY=dev-secret
-JWT_SECRET_KEY=jwt-secret
-DATABASE_URL=sqlite:///db.sqlite3
-REDIS_URL=redis://localhost:6379/0
-FLASK_ENV=development
-```
+cp .env.example .env
 
 ---
 
