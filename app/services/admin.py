@@ -1,9 +1,10 @@
 from app.extensions import db
 from app.models import Task, User, Event
-from app.schemas import task_list_schema, user_list_schema, event_list_schema
+from app.schemas import task_list_admin_schema, user_list_admin_schema, event_list_schema
 from app.dtos import PaginatedResultDTO
 from sqlalchemy import desc, asc
 from sqlalchemy.orm import joinedload
+from datetime import datetime
 
 def get_all_tasks(*, page: int, limit: int, sort: str, order: str, filters: dict) -> PaginatedResultDTO:
 
@@ -29,6 +30,20 @@ def get_all_tasks(*, page: int, limit: int, sort: str, order: str, filters: dict
     if "name" in filters:
         query = query.filter(Task.name.ilike(f"%{filters['name']}%"))
 
+    if filters.get("include_deleted") == "false":
+        query = query.filter(Task.deleted_at.is_(None))
+
+    if "created_from" in filters:
+    
+        query = query.filter(
+            Task.creation_date >= datetime.fromisoformat(filters["created_from"])
+        )
+
+    if "created_to" in filters:
+        query = query.filter(
+            Task.creation_date <= datetime.fromisoformat(filters["created_to"])
+        )
+
     total = query.count()
 
     tasks = (
@@ -40,7 +55,7 @@ def get_all_tasks(*, page: int, limit: int, sort: str, order: str, filters: dict
     )
 
     return PaginatedResultDTO(
-        items=task_list_schema.dump(tasks),
+        items=task_list_admin_schema.dump(tasks),
         page=page,
         limit=limit,
         total=total
@@ -80,7 +95,7 @@ def get_all_users(*, page: int, limit: int, sort: str, order: str, filters: dict
     )
 
     return PaginatedResultDTO(
-        items=user_list_schema.dump(users),
+        items=user_list_admin_schema.dump(users),
         page=page,
         limit=limit,
         total=total
@@ -115,11 +130,11 @@ def get_events(*, page: int, limit: int, sort: str, order: str, filters: dict) -
     if filters.get("actor_user_id"):
         query = query.filter(Event.actor_user_id == int(filters["actor_user_id"]))
 
-    if filters.get("from"):
-        query = query.filter(Event.created_at >= filters["from"])
+    if filters.get("created_from"):
+        query = query.filter(Event.created_at >= datetime.fromisoformat(filters["created_from"]))
 
-    if filters.get("to"):
-        query = query.filter(Event.created_at <= filters["to"])
+    if filters.get("created_to"):
+        query = query.filter(Event.created_at <= datetime.fromisoformat(filters["created_to"]))
 
     total = query.count()
 

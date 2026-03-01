@@ -75,7 +75,28 @@ def many_tasks(app, user):
 
         tasks = []
 
-        for i in range(1, 31):
+        task = Task(
+                user_id=user,
+                name=f"Task initial",
+                description=f"Task number 0",
+                tags=[Tag(name=f"Tag0")],
+                done=False,
+                creation_date=f"2020-01-02"
+            )
+        tasks.append(task)
+
+        task = Task(
+                user_id=user,
+                name=f"Task final",
+                description=f"Task number 70",
+                tags=[Tag(name=f"Tag70")],
+                done=False,
+                creation_date=f"2070-01-01"
+            )
+
+        tasks.append(task)
+
+        for i in range(1, 29):
             task = Task(
                 user_id=user,
                 name=f"Task {i}",
@@ -114,7 +135,30 @@ def many_users(app):
 def many_events(many_users, many_tasks):
     events = []
 
-    for i in range(20):
+    event = Event(
+            entity_type="task",
+            entity_id=many_tasks[19 % len(many_tasks)],
+            event_type="TASK_UPDATED",
+            actor_user_id=many_users[0],
+            old_value={"done": False},
+            new_value={"done": True},
+            created_at=f"2020-01-02",
+        )
+    events.append(event)
+
+    event = Event(
+            entity_type="user",
+            entity_id=many_users[0],
+            event_type="USER_CREATED",
+            actor_user_id=many_users[0],
+            old_value={"done": False},
+            new_value={"done": True},
+            created_at=f"2070-01-01",
+        )
+
+    events.append(event)
+
+    for i in range(18):
         event = Event(
             entity_type="task",
             entity_id=many_tasks[i % len(many_tasks)],
@@ -122,10 +166,10 @@ def many_events(many_users, many_tasks):
             actor_user_id=many_users[0],
             old_value={"done": False},
             new_value={"done": True},
-            created_at=datetime.now(timezone.utc),
+            created_at=f"20{randint(1, 99):02d}-{randint(1,12):02d}-{randint(1,28):02d}",
         )
         events.append(event)
-        db.session.add(event)
-
+    
+    db.session.add_all(events)
     db.session.commit()
     return [event.id for event in events]

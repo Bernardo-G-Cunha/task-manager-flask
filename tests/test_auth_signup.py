@@ -4,7 +4,7 @@ from app.extensions import db
 
 def test_signup_success(client, app):
     response = client.post(
-        "/auth/signup",
+        "api/v1/auth/signup",
         json={
             "username": "bernardo",
             "email": "bernardo@email.com",
@@ -28,7 +28,7 @@ def test_signup_success(client, app):
 
 def test_signup_invalid_data(client):
     response = client.post(
-        "/auth/signup",
+        "api/v1/auth/signup",
         json={
             "email": "email_sem_username@gmail.com"
         }
@@ -44,15 +44,15 @@ def test_signup_duplicate_user(client):
         "password": "Valid_password@2"
     }
 
-    client.post("/auth/signup", json=payload)
-    response = client.post("/auth/signup", json=payload)
+    client.post("api/v1/auth/signup", json=payload)
+    response = client.post("api/v1/auth/signup", json=payload)
 
     assert response.status_code == 409
 
 
 def test_signup_invalid_password(client):
     response = client.post(
-        "/auth/signup",
+        "api/v1/auth/signup",
         json={
             "username": "error_user",
             "email": "error@email.com",

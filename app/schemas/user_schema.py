@@ -17,6 +17,18 @@ class UserCompleteSchema(ma.SQLAlchemySchema):
     tasks = ma.Nested("TaskCompleteSchema", many=True)
     tags = ma.Nested("TagSchema", many=True)
 
+class UserAdminSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = User
+        load_instance = True
+
+    id = ma.auto_field(dump_only=True)
+    username = ma.auto_field()
+    email = ma.auto_field()
+    role = ma.auto_field()
+    deleted_at = ma.auto_field()
+    created_at = ma.auto_field()
+
 
 class UserLoginSchema(ma.SQLAlchemySchema):
     class Meta:
@@ -60,3 +72,4 @@ user_complete_schema = UserCompleteSchema()
 user_list_schema = UserListSchema(many=True)
 user_login_schema = UserLoginSchema()
 user_signup_schema = UserSignupSchema()
+user_list_admin_schema = UserAdminSchema(many=True)

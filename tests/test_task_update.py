@@ -6,7 +6,7 @@ def test_task_update_success(client, auth_token, tasks, app):
     task_id = tasks[0]
 
     response = client.patch(
-        f"/tasks/{task_id}",
+        f"api/v1/tasks/{task_id}",
         headers={
             "Authorization": f"Bearer {auth_token}"
         }, json={"name": "Task updated"}
@@ -22,7 +22,7 @@ def test_task_update_success(client, auth_token, tasks, app):
 
 def test_error_task_update(client, auth_token, tasks, app):
     response = client.patch(
-        "/tasks/5",
+        "api/v1/tasks/5",
         headers={
             "Authorization": f"Bearer {auth_token}"
         }, json={"name": "Task updated"}

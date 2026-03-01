@@ -1,7 +1,7 @@
 def test_tasks_default_pagination(client, auth_token, many_tasks):
 
     response = client.get(
-        "/tasks/",
+        "api/v1/tasks/",
         headers={
             "Authorization": f"Bearer {auth_token}"
         }
@@ -19,7 +19,7 @@ def test_tasks_default_pagination(client, auth_token, many_tasks):
 def test_tasks_empty_page(client, auth_token, many_tasks):
 
     response = client.get(
-        "/tasks?page=4&limit=10",
+        "api/v1/tasks?page=4&limit=10",
         headers={
             "Authorization": f"Bearer {auth_token}"
         }
@@ -34,7 +34,7 @@ def test_tasks_empty_page(client, auth_token, many_tasks):
 def test_tasks_order_pagination(client, auth_token, many_tasks):
 
     response = client.get(
-        "/tasks?page=1&limit=10&sort=name&order=asc",
+        "api/v1/tasks?page=1&limit=10&sort=name&order=asc",
         headers={
             "Authorization": f"Bearer {auth_token}"
         }
@@ -50,7 +50,7 @@ def test_tasks_order_pagination(client, auth_token, many_tasks):
 
 def test_error_get_tasks(client, auth_token, many_tasks):
     response = client.get(
-        "/tasks/",
+        "api/v1/tasks/",
         headers={
             "Authorization": f"Bearer {auth_token + 'E'}"
         }
