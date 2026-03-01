@@ -11,7 +11,7 @@ def test_admin_email_filter(client, admin_token, many_users):
         "Authorization": f"Bearer {admin_token}"
     })
     data = res.get_json()
-    print(data)
+
     assert data["data"]["users"][0]["email"] == "email5@example.com"
     assert res.status_code == 200
 

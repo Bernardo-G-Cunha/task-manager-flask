@@ -45,7 +45,7 @@ def create_app(test_config=None):
             }
         ],
         "swagger_ui": True,
-        "specs_route": "/docs/",
+        "specs_route": "/apidocs/",
     }
 
     template = {
