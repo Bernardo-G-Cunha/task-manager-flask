@@ -1,7 +1,7 @@
 # Task Manager API (Flask)
 
 REST API for task management built with Flask, SQLAlchemy and JWT authentication.
-This project was designed as a **production-style backend** with pagination, filtering, rate limiting, admin routes, soft delete and automatic Swagger documentation.
+This project was designed as a **production-style backend** with pagination, filtering, rate limiting, admin routes, soft delete, automated tests with pytest and automatic Swagger documentation.
 
 **Live API**
 
@@ -47,6 +47,7 @@ https://task-manager-flask-vcwa.onrender.com/apidocs
 * PostgreSQL
 * Docker
 * SQLite (local development)
+* Pytest (testing)
 
 ---
 
