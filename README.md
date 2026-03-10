@@ -1,11 +1,23 @@
 # Task Manager API (Flask)
 
 REST API for task management built with Flask, SQLAlchemy and JWT authentication.
-This project was designed as a production-style backend with pagination, filtering, rate limiting, admin routes, soft delete and automatic Swagger documentation.
+This project was designed as a **production-style backend** with pagination, filtering, rate limiting, admin routes, soft delete and automatic Swagger documentation.
+
+**Live API**
+
+```
+https://task-manager-flask-vcwa.onrender.com
+```
+
+Swagger documentation:
+
+```
+https://task-manager-flask-vcwa.onrender.com/apidocs
+```
 
 ---
 
-## Features
+# Features
 
 * JWT authentication
 * Task CRUD
@@ -18,10 +30,11 @@ This project was designed as a production-style backend with pagination, filteri
 * Swagger documentation (Flasgger)
 * Docker support
 * Database migrations (Flask-Migrate)
+* PostgreSQL production database
 
 ---
 
-## Tech stack
+# Tech stack
 
 * Python 3.11+
 * Flask
@@ -31,12 +44,13 @@ This project was designed as a production-style backend with pagination, filteri
 * Flask-Limiter
 * Flasgger (Swagger UI)
 * Redis
+* PostgreSQL
 * Docker
-* SQLite / PostgreSQL compatible
+* SQLite (local development)
 
 ---
 
-## Project structure
+# Project structure
 
 ```
 app/
@@ -50,9 +64,15 @@ app/
     services/
     extensions.py
     config.py
+
 migrations/
 tests/
+
 docker-compose.yml
+Dockerfile
+entrypoint.sh
+init-db.sql
+pyproject.toml
 requirements.txt
 requirements-dev.txt
 run.py
@@ -62,7 +82,7 @@ README.md
 
 ---
 
-## Installation
+# Installation
 
 Clone repository
 
@@ -75,8 +95,20 @@ Create virtual environment
 
 ```
 python -m venv venv
-source venv/bin/activate #Linux
-.venv\Scripts\activate # Windows
+```
+
+Activate environment
+
+Linux / Mac:
+
+```
+source venv/bin/activate
+```
+
+Windows:
+
+```
+venv\Scripts\activate
 ```
 
 Install dependencies
@@ -88,22 +120,33 @@ pip install -e .
 
 ---
 
-## Environment variables
+# Environment variables
 
-Copy example file
+Copy the example file
 
+```
 cp .env.example .env
+```
+
+Edit environment variables according to your environment.
 
 ---
 
-## Running locally
+# Running locally
+
+Run migrations:
 
 ```
 flask db upgrade
+```
+
+Start server:
+
+```
 flask run
 ```
 
-API will run at:
+API:
 
 ```
 http://localhost:5000
@@ -117,17 +160,39 @@ http://localhost:5000/apidocs
 
 ---
 
-## Running with Docker
+# Running with Docker
+
+Build and start containers:
 
 ```
 docker-compose up --build
 ```
 
+This will start:
+
+* Flask API
+* PostgreSQL
+* Redis
+
 ---
 
-## Authentication
+# Deployment
 
-Login:
+The API is deployed on **Render** using Docker containers.
+
+Production services:
+
+* **Web service:** Flask API container
+* **Database:** PostgreSQL
+* **Cache / rate limiting:** Redis
+
+Environment variables are configured through the Render dashboard.
+
+---
+
+# Authentication
+
+Login endpoint:
 
 ```
 POST /api/v1/auth
@@ -144,7 +209,7 @@ Response:
 }
 ```
 
-Use token:
+Authenticated requests must include:
 
 ```
 Authorization: Bearer <token>
@@ -152,7 +217,7 @@ Authorization: Bearer <token>
 
 ---
 
-## Tasks endpoints
+# Tasks endpoints
 
 ```
 GET    /api/v1/tasks
@@ -177,7 +242,7 @@ Example:
 
 ---
 
-## Admin endpoints
+# Admin endpoints
 
 ```
 GET /api/v1/admin/tasks
@@ -189,7 +254,7 @@ Admin token required.
 
 ---
 
-## Pagination format
+# Pagination format
 
 ```
 {
@@ -208,7 +273,7 @@ Admin token required.
 
 ---
 
-## Filters
+# Filters
 
 Supported filters:
 
@@ -226,11 +291,11 @@ Example:
 
 ---
 
-## Rate limiting
+# Rate limiting
 
-Configured with Flask-Limiter + Redis.
+Implemented using **Flask-Limiter + Redis**.
 
-Example:
+Examples:
 
 * login → 5/min
 * signup → 2/min
@@ -238,15 +303,22 @@ Example:
 
 ---
 
-## Migrations
+# Database migrations
+
+Create migration:
 
 ```
 flask db migrate
+```
+
+Apply migration:
+
+```
 flask db upgrade
 ```
 
 ---
 
-## License
+# License
 
 MIT
