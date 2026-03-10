@@ -15,6 +15,6 @@ class Event(db.Model):
 
     actor_user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
 
-    created_at = db.Column(db.DateTime(timezone=True), nullable=False, server_default=db.func.now())
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False, server_default=db.text("now()"))
 
     actor = db.relationship("User", backref="events")

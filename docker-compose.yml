@@ -1,18 +1,32 @@
 version: "3.9"
 
 services:
+  api:
+    build: .
+    container_name: taskmanager_api
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+
   postgres:
     image: postgres:16
     container_name: taskmanager_postgres
     restart: always
+    env_file:
+      - .env
     environment:
-      POSTGRES_DB: taskmanager
-      POSTGRES_USER: taskuser
-      POSTGRES_PASSWORD: taskpass
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
 
 volumes:
   postgres_data:

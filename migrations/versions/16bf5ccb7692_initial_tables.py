@@ -38,6 +38,11 @@ def upgrade():
         batch_op.add_column(sa.Column('deleted_at', sa.DateTime(timezone=True), nullable=True))
         batch_op.create_index(batch_op.f('ix_tasks_user_id'), ['user_id'], unique=False)
 
+        op.alter_column(
+        "tasks",
+        "creation_date",
+        server_default=sa.text("now()"))
+
     with op.batch_alter_table('tasks_tags', schema=None) as batch_op:
         batch_op.drop_constraint(batch_op.f('tasks_tags_task_id_fkey'), type_='foreignkey')
         batch_op.drop_constraint(batch_op.f('tasks_tags_tag_id_fkey'), type_='foreignkey')

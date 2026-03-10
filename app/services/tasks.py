@@ -106,7 +106,7 @@ def get_tasks_paginated(user_id: int, page: int, limit: int, sort: str, order: s
 
     total = (
         db.session.query(Task)
-        .filter(Task.user_id == user_id)
+        .filter(Task.user_id == user_id, Task.deleted_at.is_(None))
         .count()
     )
 

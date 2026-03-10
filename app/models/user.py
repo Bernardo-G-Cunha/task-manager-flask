@@ -9,7 +9,7 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable = False)
     role = db.Column(db.String(20), nullable=False, default="USER")
     
-    created_at = db.Column(db.DateTime(timezone=True), nullable=False, server_default=db.func.now())
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False, server_default=db.text("now()"))
     deleted_at = db.Column(db.DateTime(timezone=True), nullable=True)
 
     tasks = db.relationship('Task', back_populates='user')

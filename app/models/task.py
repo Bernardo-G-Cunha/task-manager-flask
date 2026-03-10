@@ -6,9 +6,9 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(70), nullable = False)
     description = db.Column(db.Text, nullable = True)
-    due_date = db.Column(db.DateTime, nullable = True)
+    due_date = db.Column(db.DateTime(timezone=True), nullable = True)
     done = db.Column(db.Boolean, default=False, nullable=False)
-    creation_date = db.Column(db.DateTime(timezone=True), server_default=db.func.now(), nullable=False)
+    creation_date = db.Column(db.DateTime(timezone=True), server_default=db.text("now()"), nullable=False)
     
     deleted_at = db.Column(db.DateTime(timezone=True), nullable=True)
 

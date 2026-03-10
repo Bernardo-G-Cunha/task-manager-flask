@@ -320,7 +320,7 @@ def edit_task(task_id):
     
     update_task(update_task_data=update_data, user_id=user_id, task_id=task_id)
 
-    return {"success": True,"message": "Task successfully updated"}, 204
+    return "", 204
 
 
 @tasks_bp.route('/<int:task_id>', methods=['DELETE'])
@@ -369,4 +369,4 @@ def delete_task(task_id):
     
     remove_task(task_id=task_id, user_id=user_id)
 
-    return {"success": True,"message": "Task successfully deleted"}, 204
+    return "", 204
